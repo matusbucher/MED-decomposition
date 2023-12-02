@@ -3,32 +3,39 @@
 
 #include <vector>
 #include <unordered_set>
-
-struct vertex {
-    int id;
-    vertex *adjVertices[3];
-
-    vertex(int _id = 0) : id{_id} { adjVertices[0] = adjVertices[1] = adjVertices[2] = nullptr; }
-};
-
+#include <iostream>
 
 class cubicGraph {
 
 private:
     int numVertices;
-    vertex **vertices;
+    // for each u, v, if (u,v) is edge, than adjListIndices[u][v] = x such that adjList[u][x] = v,
+    // otherwise adjListIndices[u][v] = -1
+    int** adjList;
+    int** adjListIndices;
+    char** medColoring;
+    int hasNoBridge;
 
     void dfsHelper(int, std::vector<int>&, std::unordered_set<int>&);
+    void generateMedColoring(int);
+    void medColoringHelper(int, std::vector<int>&, char**, bool*);
+    void colorEdge(int, int, char**, char, bool*);
+    bool checkCycles(char**);
 
 public:
-    cubicGraph(int n);
+    cubicGraph(int);
     ~cubicGraph();
 
-    void readGraph();
-    void printGraph();
+    void readGraph(std::istream&);
+    void printGraph(std::ostream&);
 
-    std::vector<int> bfs(int v);
-    std::vector<int> dfs(int v);
+    std::vector<int> bfs(int);
+    std::vector<int> dfs(int);
+
+    char** getMedColoring();
+    bool isMedDecomposable();
+
+    bool isBridgeless();
 };
 
 #endif
