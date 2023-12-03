@@ -14,13 +14,15 @@ private:
     int** adjList;
     int** adjListIndices;
     char** medColoring;
+    bool coloringDone;
     int hasNoBridge;
 
     void dfsHelper(int, std::vector<int>&, std::unordered_set<int>&);
     void generateMedColoring(int);
-    void medColoringHelper(int, std::vector<int>&, char**, bool*);
-    void colorEdge(int, int, char**, char, bool*);
-    bool checkCycles(char**);
+    void medColoringHelper(int, std::vector<int>&);
+    void colorEdge(int, int, char);
+    bool checkCycles();
+    bool checkDoubleStars();
 
 public:
     cubicGraph(int);
