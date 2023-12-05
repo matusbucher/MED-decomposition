@@ -1,0 +1,567 @@
+2BELKA1-52:
+- Zdvojeny Belcastro-Kaminski.26, var.1. Vrchol i+26 je kopiou vrcholu iE{0,...,25}
+- V BelKa-26 boli rozpojene odstranitelne hrany 1-24 a 5-16 v oboch kopiach.
+- Prepojenie: 1-50, 24-27; 5-44, 18-31
+- stabilny, neparnost=2
+
+2BELKA5-52:
+- Zdvojeny Belcastro-Kaminski.26, var.5. Vrchol i+26 je kopiou vrcholu iE{0,...,25}
+- V BelKa-26 boli rozpojene odstranitelne hrany 1-24 a 5-16 v oboch kopiach.
+- Prepojenie: 1-44, 24-31; 5-50, 18-27
+- stabilny, neparnost=2
+
+2BELKAU-52:
+- Zdvojeny Belcastro-Kaminski.26, var.11. Vrchol i+26 je kopiou vrcholu iE{0,...,25}
+- V BelKa-26 boli rozpojene odstranitelne hrany 1-24 a 5-16 v oboch kopiach.
+- Prepojenie: 1-50, 24-31; 5-44, 18-27 nezachovava hrany
+- cc=4, striktne stabilnny, neparnost=2s
+
+2TF1-01-58:
+- I-rozsirenie snarku 2TF1-01-56 cez dvojicu hran {[21,28],[24,25]}.
+- cc=5, odd=2, stabilny
+
+2TF1-03-58:
+- Rozsirenie snarku 2TF1-03-50 ziskane dvoma I-rozsireniami cez hrany
+  [0,49]-[3,46] a cez [21,20]-[24,25] a naslednym Y-rozsirenim cez trojicu
+  pozostavajucu z hrany [11,36} a dvoch novych hran ziskanych z I-rozsireni.
+- cc=5, striktne stabilny, izomorfny s 1TF1-33B-58, ine cislovanie
+
+2TF1-03A-56:
+- Kombinacia I-rozsirenia a Y-rozsirenia snarku 2TF1-03-50
+  cez dvojicu hran {[0,49],[3,46]} a cez trojicu {[21,28],[24,25],[11,36]}.
+- cc=5, striktne stabilny
+
+2TF1-13B-58:
+- I-rozsirenie snarku 2TF1-03B-56 cez hrany [11,36]-[31,48],
+  pricom [11,36] je jedina potlacitelna hrana v 2TF1-03B-56
+- cc=5, striktne stabilny
+
+2TF1-33B-58:
+- I-rozsirenie snarku 2TF1-03B-56 cez hrany [11,36]-[54,55],
+  pricom [11,36] je jedina potlacitelna hrana v 2TF1-03B-56
+- cc=5, striktne stabilny
+
+2TF1EN-A-66:
+- Transformacia snarku 2TF1EN-A-64:
+  {[11,36],[21,28],[24,25]} --> [11,64],[21,64],[28,64]
+                                [36,65],[24,65],[25,65]
+- cc=5, striktne stabilny
+
+2TF1EN-A-68:
+- Y-rozsirenie snarku 2TF1EN-A-64 cex trojicu {[11,36],[21,28],[24,25]}
+- cc=5, striktne stabilny
+
+2TF1N1-60:
+- I-rozsirenie cyklicky 5-suvisleho snarku 2TF1N-58 cez dvojicu hran
+  {[21,28],[24,25]}, co boli jedine nepotlacitelne hrany v 2TF1N-58.
+- cc=5, odd=2, striktne stabilny
+
+2TF1N1-62:
+- I-rozsirenie cyklicky 5-suvisleho snarku stabilneho 2TF1N1-60
+  cez dvojicu hran {[46,53],[49,50]}.
+- cc=5, odd=2, striktne stabilny
+
+2TF1N1-64:
+- I-rozsirenie cyklicky 5-suvisleho snarku stabilneho 2TF1N1-62
+  cez dvojicu hran {[0,56],[3,55]}.
+- cc=5, odd=2, striktne stabilny
+
+2TF1N-A-68:
+- I-rozsirenie snarku 2TF1N-A-66 cez jedine dve nepotlacitelne hrany [6,31]-[23,48],
+  cez jeho jedine nepotlacitelne hrany
+- cc=5, striktne stabilny
+
+2TF1N-B-58:
+- Cyklicky 5-suvisly snark ziskany z dvoch nezafarbitelnych blokov TF
+  zlozenia (3,2)-konduktor+negator+(2,3)-konduktor s poctom vrcholov 9+7+=25
+  a z jedneho dodatocneho negatora, pricom bloky su usporiadane cyklicky
+- Ma 4 nepotlacitelne hrany [6,36],[21,28],[23,42],[24,25].
+- cc=5, odd=2, nestabilny.
+
+2TF1N-C-62:
+- Y-rozsirenie snarku 2TF1N-C-58 cez jeho jedine 3 nepotlacitelne hrany
+  [11,31], [21,28], [24,25]
+- cc=5, striktne stabilny
+
+2TF1N-D-60:
+- I-rozsirenie nestabilneho snarku 2TF1N-D-58 cez dvojicu [21,28]-[24,25],
+  co boli jeho jedine nepotlacitelne hrany.
+- cc=5, striktne stabilny
+
+2TF1-X3B-58:
+- Snark skonstruovany z  2TF1-03B-56 transformaciou
+  {[11,36],[54,55]}-->{[11,56],[36,57],[54,56],[55,57],[56,57]
+- cc=5, striktne stabilny
+
+2TF1-X3B-60:
+- I-rozsirenie snarku 2TF1-X3B-58 cez {[6,23],[56,57]}.
+- cc=5, striktne stabilny
+
+2TF1-X3B-62:
+- I-rozsirenie snarku 2TF1-X3B-60 cez {[31,48],[57,59]}
+- cc=5, odd=2, striktne stabilny
+
+2W2JA-66:
+- Medzi dva (2,2,1)-poly W radu 31 vzniknute z Hagglundovho snarku 5FLOWE3-34
+  odstranenim cesty dlzky 2 v jednom podgrafe B radu 3 je vlozeny jeden (2,2)-pol J
+  radu 2, rezidualne hrany su pripojene k novemu vrcholu. Z neho veduca hrana
+  je pripojena na prepojene volne konektory dvoch W
+- cc=4, odd=2, striktne stabilny, pmi=5
+
+2W2JB-66:
+- Snark ziskany z 2W2JA-66 prepnutim {[0,62],[5,63]}-->{[0,63],[5,62]}.
+- cc=4, pmi=5, striktne stabilny
+
+3N1C-A-40:
+- Seria 3 nulatorov radu 8 zapojena do cyklu s jednym konduktorom
+  radu 10 typu Blanusa 1, medzi nulatory su vlozene
+  dva polovicne negatory radu 3, rezidualne pohrany su prepojene
+- cc=4, odd=2, striktne stabilny
+
+3N1C-A-44:
+- Seria 3 nulatorov radu 8 zapojena do cyklu s jednym konduktorom
+  radu 10 typu Blanusa 1, medzi nulatory su vlozene tri polovicne
+  negatory radu 3, rezidualne pohrany su prepojene do noveho vrchola
+- cc=4, odd=2, striktne stabilny
+
+3N1C-R-46:
+- Seria 3 nulatorov radu 8 zapojena do cyklu s jednym konduktorom
+  radu 10 typu Blanusa 1, medzi nulatory su vlozene tri polovicne
+  negatory radu 4, rezidualne pohrany su prepojene 2 novych vrcholov
+- cc=4, odd=2, striktne stabilny, pravdepodobne pmi=5
+
+3NEGCON-46:
+- 3 x dyad + isochrome spojene cyklicky, rezidualne hrany pripojene
+  k novemu vrcholu 45
+- cc=4, odd=2, striktne stabilny
+
+3NEGCON-54:
+- 3 x (dyad + isochrome) + isochrome cyklicky, rezidualne hrany pripojene
+  k novemu vrcholu 45
+- cc=4, odd=2, striktne stabilny
+
+3PS-34:
+- cc=4, striktne stabilny snark
+
+3PS-ROT-34:
+- cc=4, striktne stabilny snark
+
+4AFLOW1-36:
+- AAAA
+- cc=4, girth=5, striktne stabilny
+
+4AFLOW2-36:
+- BBBB
+- cc=4, girth=5, striktne stabilny
+
+4AFLOW3-36:
+- ABAB
+- cc=4, girth=5, striktne stabilny
+
+4AFLOW4-36:
+- AABB
+- cc=4, girth=5, striktne stabilny
+
+4AFLOW5-36:
+- AAAB
+- cc=4, girth=5, striktne stabilny
+
+4AFLOW6-36:
+- ABBB
+- cc=4, girth=5, striktne stabilny
+
+4BFLOW1-36:
+- AAAA
+- cc=4, girth=5, striktne stabilny
+
+4BFLOW2-36:
+- BBBB
+- cc=4, girth=5, striktne stabilny
+
+4BFLOW3-36:
+- ABAB
+- cc=4, girth=5, striktne stabilny
+
+4BFLOW4-36:
+- AABB
+- cc=4, girth=5, striktne stabilny
+
+4BFLOW5-36:
+- AAAB
+- cc=4, girth=5, striktne stabilny
+
+4BFLOW6-36:
+- ABBB
+- cc=4, girth=5, striktne stabilny
+
+4FLOW1-36:
+- konstrukcia: AAAA
+- cc=4, striktne stabilny
+
+4FLOW2-36:
+- konstrukcia: BBBB
+- cc=4, striktne stabilny
+
+4FLOW3-36:
+- konstrukcia: ABAB
+- cc=4, striktne stabilny
+
+4FLOW4-36:
+- konstrukcia: AABB
+- cc=4, striktne stabilny
+
+4FLOW5-36:
+- konstrukcia: AAAB
+- cc=4, striktne stabilny
+
+4FLOW6-36:
+- konstrukcia: ABBB
+- cc=4, striktne stabilny
+
+4PS-36:
+- ziskany cyklickym spojenim dvoch vlastnych (2,2)-polov A radu 10 a dvoch
+  nevlastnych (2,2)-polov B radu 8 v poradi A-B-A-B
+- cc=4, striktne stabilny snark
+
+4PS0101-40:
+- stabilne rozsirenie striktne stabilneho 4PS.36
+  cez dvojice hran [0,31][5,35] a [13,22][17,23]
+- cc=4, striktne stabilny
+
+4PS0101-42:
+- stabilne rozsirenie cisto stabilneho snarku 4PS-36:
+  tri I-rozsirenia cez dvojice hran
+  {[0,31],[5,35]}, {[13,22],[17,23]}, {[2,14],[7,15]}
+- cc=4, striktne stabilny
+
+4PSA-38:
+- striktne stabilny, I-rozsirenie cisto stabilneho snarku 4PS-36
+  cez hrany {[2,14],[7,15]}
+- cc=4, girth=5
+
+4PSD-38:
+- cisto stabilny snark: I-rozsirenie [0,31]-[17,23]
+  menej kostabilny ako 4PSA-38
+- cc=4, girth=5
+
+4PSE-38:
+- striktne stabilny snark, I-rozsirenie 4PS-36 + [5,35][13,22]
+- cc=4, girth=5
+
+5FE6CEP-46:
+- Rozsirenie snarku 5FLOWE3-34 s pmi=5 12-vrcholovym (2,2)-T-identifikatorom
+  6CEP radu 12 vlozenym medzi hrany 2-32 a 7-37
+- cc=4, pmi=5, neparnost=2, flow=5, striktne stabilny
+
+5FLOW1-44:
+- Snark vytvoreny z 5FLOW1-42 nasledujucou modifikaciou:
+  1. Odstranime hranu [2,7] a vrchol 7 na ceste [[19,7,20] potlacime.
+  2. Aplikujeme I-rozsirenie na dvojicu hran {[19,20],[[35,36]}
+  3. Novu hranu [42,43] subdividujeme vrcholom 7 a vratime hranu [2,7].
+- Snark 5FLOW1-42 vznikol zo snarku 5-FLOW1-50 nahradenim 8-vrcholovej
+  superhrany obsahujucej 5-cyklus 30, 31, 32, 33, 34 bezvrcholovou superhranou
+  pozostavajucou z dvoch rovnobeznych izolovanych hran.
+- Zo vsetkych 63 hran je 62 potlacitelnych; nepotlacitelna hrana bola [35,36].
+- Novy snark je striktne stabilny, cc=4
+
+5FLOW1-46:
+- I-rozsirenie snarku 5FLOW1-44 cez dvojicu hram {[5,9].[30,41]}.
+- striktne stabilny, cc=4
+
+5FLOW1-50:
+- Snark ziskany nasledujucou superpoziciou do 5-cyklu v Ps:
+- Superhrany su nevlastne 2,2)-poly radu 8 ziskane odstranenim dvojice
+  susednych vrcholov z PG; su typu A a B  pricom typ B vznikne
+  transpoziciou polhran v jednom 2-konektore dipolu typu A.
+- Supervrcholy su (2,1,2)-poly radu 1. Postupnost superhran je AAAAA
+  flow=5, odd=4, res=3, pmi=4
+
+5FLOW1A-44:
+- I-rosirenie snarku 5FLOW1-42 cez hrany [30,41] a [35,36].
+- Povodny snark mal jedinu nepotlacitelnu hranu [35,36].
+- Novy snark 5FLOW1A-44 je cisto stabilny.
+
+5FLOW1B-46:
+- I-rozsirenie snarku 5FLOW1B-44 cez dvojicu hran hrany [5,9],[30,41].
+- Povodny snark mal jedinu nepotlacitelnu hranu [30,41].
+- Vysledny snark 5FLOW1B-46 je cisto stabilny.
+
+5FLOW1C-44:
+= I-rozsirenie snarku 5FLOW1-42 cez hrany [2,7] a [35,36].
+- Povodny snark mal jedinu nepotlacitelnu hranu [35,36].
+- Novy snark 5FLOW1C-44 je cisto stabilny.
+
+5FLOW1D-46:
+- I-rozsirenie snarku 5FLOW1B-44 cez hrany [5,10] a [30,41].
+- Povodny snark mal jedinu nepotlacitelnu hranu [30,41].
+- Vysledny snark 5FLOW1D-46 je cisto stabilny.
+
+5FLOWE3-58:
+- Nahradenie vrcholu 0 a jeho susedov v 5FLOWE3-34 (2,2,2)-polom radu 28
+  vytvorenym superpoziciou K_{1,3} 9-vrcholovym vlastnym (2,3)-polom
+  z Petersenovho grafu.
+- striktne stabilny, pmi=4, superpozicia znizila pmi z 5 na 4.
+
+5FLOWE3A-42:
+- Snark 5FLOWE3A-42 vznikol zo silneho snarku 5FLOWE3-34 (najmensieho mozneho radu)
+  rozpojenim hran [10,26] a [15,27] a vlozenim medzi ne 8-vrcholoveho
+  nevlastneho (2,2)-polu Pg-{u, uv, v}.
+- striktne stabilny, cc=4.
+
+5FLOWE3A-58:
+- nahradenie vrcholu 0 a jeho susedov v 5FLOWE3-34 28-vrcholovym snarkom
+- cc=4, striktne stabilny, pmi=4
+
+5FLOWE3B-42:
+- Snark 5FLOWE3A.42 vznikol zo silneho snarku 5FLOWE3-34 (najmensieho mozneho radu)
+  rozpojenim hran [10,26] a [15,27] a vlozenim medzi ne 8-vrcholoveho
+  nevlastneho (2,2)-polu Pg-{u, uv, v}. Oproti 5FLOWE3A-42 sa hrany
+  [10,35] a [15,41] prekrizia a vzniknu hrany [10,41] a [15,35].
+- striktne stabilny, cc=4.
+
+5FLOWE3B-58:
+- nahradenie vrcholu 25 a jeho susedov v 5FLOWE3-34 28-vrcholovym snarkom
+- cc=4, striktne stabilny, pmi=4
+
+ALLIE1A-74:
+- I-Rozsirenia snarku ALLIE1-68 cez dvojicu hran {[22,28],[64,68]}.
+- cc=4, odd=2, striktne stabilny snark
+
+ALLIE1A-82:
+- I-rozsirenie snarku ALLIE1-80 cez dvojicu hran {[22,28],[65.65]}
+- cc=4, odd=2, striktne stabilny snark
+
+CS3^2-72:
+- Snark vytvoreny z dvoch identickych kopii snarku CS3A-36,
+  v ktorych sa rozrezu hrany [14,35], [15,24] a [25,34]
+  a vysledne polhrany sa spoja s odpovedajucimi polhranami
+  druhej kopie. Mnozina rozrezanych hran je odstranitelna.
+- cc=4, striktne stabilny
+
+GB9C-04Y-70:
+- Y-rozsirenie snarku GB9C-04-66 cez jeho jedine tri potlacitelne hrany
+  [0,63], [21,65], [42,64].
+- Snark je cisto stabilny, cc=5, odd=2.
+
+GB9C-11-66:
+- Goldbergovsky snark vytvoreny z cyklu 9 negatorov radu 7, pricom rezidualne
+  polhrany su vhodne pripojene k trom dodatocnym vrcholom 63, 64 a 65.
+- cc=5, striktne stabilny
+
+GB9E-01-68:
+- Goldbergovsky snark vytvoreny z cyklu 9 negatorov radu 7, pricom rezidualne
+  polhrany su rovnomerne pripojene k piatim dodatocnym vrcholom 63-67
+- cc=5, striktne stabilny
+
+HAGG-34:
+- Hagglundov snark radu 34
+- Netrivialny stabilny (=silny) snark najmensieho radu, jeden zo 7 takych.
+- Jeho cirkularne tokove cislo je 5.
+- Hagglund (On snarks that are far from being 3-edge-colorable) uvadza, ze
+  to je snark najmesieho radu s perfect matching index=5, a tiez snark
+  najmesieho radu, v ktorom potlacenie lubovolneho vrchola vytvara snark.
+- cc=4, pmi=5, odd=2, flow=5, striktne stabilny
+
+HED2A-54:
+- Odvodeny zo snarku HED0A-44 substituciou 2-vrcholoveho (2,2)-polu J
+  na vrcholoch 43-44 12-vrcholovym (2,2)-polom skonstruovanym nasledovne:
+  Zoberieme karteziansky sucin 3-cesta x K_2. Hrany v krajnych 4-cykloch
+  spajajuce vrcholy stupna 2 subdividujeme, subdividujeme aj jednu hranu
+  vnutorneho 4-cyklu leziacu na kopii 3-cesty. Tri vrcholy ziskane subdiviziou
+  spojime s dalsim novym vrcholom. K zostavajucim 2-valentnym vrcholom pripojime
+  polhrany, cim vznikne (2,2)-pol. cc=4, striktne stabilny
+- ODD: 2
+- PMI: 5
+- DF : 6
+
+NG6A-90:
+- Snark podobnej konstrukcie ako NG7A-106, len pre obvod 6
+- cc=4, striktne stabilny,
+- dvojica {45,89} nesusednych vrcholov je neodstranitelna
+
+NONONO-46:
+- Petersenovsky negator N a petersenovsky nulator O trikrat do cyklu NONONO
+  + 1 vrchol incidentny s rezidualnymi polhranami
+- cc=4, striktne stabilny
+
+P9-3SV5A-70:
+- Vrcholova superpozicia do 9-cyklu Pg
+- striktne stabilny
+
+P9-3SVR-68:
+- Vrcholova superpozicia do 9-cyklu Pg
+- striktne stabilny
+
+RES3-0A-46:
+- I-rozsirenie snarku RES3-0A-44 cez dvojicu hran [23,24]-[41,42]
+- Striktne stabilny, cc=4
+
+RES3-0B-46:
+- I-rozsirenie snarku RES3-0A-44 cez dvojicu hran [2,12]-[4,42]
+- Striktne stabilny, cc=4
+
+RES3-0E-46:
+- I-rozsirenie snarku RES3-0A-44 cez dvojicu hran [4,42]-[24,29]
+- Striktne stabilny, cc=4
+
+RES3-0F-52:
+- I-rozsirenie bistabilneho snarku RES2-0F-50 cez dvojicu hran [31,41]-[48,49].
+- Striktne stabilny, odd=2
+
+RES3-0F-54:
+- Y-rozsirenie bistabilneho snarku RES3-0F-50 cez trojicu hran
+  [31,41],[33,34],[48,49].
+- Striktne stabilny, odd=2.
+
+RES3-0G-46:
+- I-rozsirenie snarku RES3-0A-44 cez dvojicu hran [23,24]-[41,42]
+- Striktne stabilny, cc=4
+
+RES3-1F-50:
+- I-rozsirenie snarku RES3-0F-46 cez hrany [31,41]-[46,47]
+- Striktne stabilny
+
+RES30IA-48:
+- I-rozsirenie snarku RES3-0I-46 cez dvojicu hran [2,44]-[41,42]
+- Striktne stabilny, cc=4
+
+RES30IB-48:
+- I-rozsirenie snarku RES3-0I-46 cez dvojicu hran [12,44]-[41,42]
+- Striktne stabilny, cc=4
+
+RLMS-38:
+- stabilny snark, cc=4, optimalizacia zakladnej konstrukcie: BA-2vrch_menic-BA
+
+SS4-0-A-52:
+- Konstrukcia blow-up zo 4 petersenovskych nulatorov. Styri visiace hrany
+  blow-upu su pripojene k piatemu petersenovskemu nulatoru.
+- cc=4, striktne stabilny
+
+SS4-0-B-52:
+- Konstrukcia blow-up zo 4 petersenovskych nulatorov. Styri visiace hrany
+  blow-upu su pripojene k piatemu petersenovskemu nulatoru.
+- Ine prepojenie ako SS4-0-A-52
+- cc=4, striktne stabilny
+
+SS4A-38:
+- Striktne stabilny snark skonstruovany metodou semiblow-up zo 4-cyklu a kompletneho
+  grafu K_2, pricom vrcholy cyklu sa nahradia petersenovskymi nulatormi a vrcholy K_2
+  sa spoja s konektormi nulatorov. Ine prepojenie ako SS4B-3
+
+SS4A-40:
+- Konstrukcia blow-up zo 4 petersenovskych nulatorov.
+- cc=4, striktne stabilny
+
+SS4A-42:
+- Striktne stabilny snark skonstruovany zo 4 Petersenovskych nulatorov,
+  pricom na kazdy konektor su privedene nenulove hodnoty.
+- Metoda konstrukcie je kombinacia blow-up (2x) a semiblow-up (2x).
+
+SS4A-44:
+- Striktne stabilny snark skonstruovany zo 4 Petersenovskych nulatorov,
+  pricom na kazdy konektor su privedene nenulove hodnoty.
+- Metoda konstrukcie je kombinacia blow-up (3x) a semiblow-up (1x).
+
+S4A-46:
+- Konstrukcia blow-up zo 4 petersenovskych nulatorov. Ine prepojenie ako SS4B-46.
+- cc=4, striktne stabilny
+
+SS4A1-48:
+- Rosirenie snarku SS4A-46 cez dvojicu hran [15,32]-[13,33].
+- cc=4, pmi=4, odd=2, striktne stabilny
+
+SS4A2-48:
+- Rozsirenie snarku SS4A-46 cez dvojicu hran [2,33]-[6,32]
+- cc=4, pmi=4, odd=2, striktne stabilny
+
+SS4B-38:
+- Striktne stabilny snark skonstruovany metodou semiblow-up zo 4-cyklu a kompletneho
+- grafu K_2, pricom vrcholy cyklu sa nahradia petersenovskymi nulatormi a vrcholy K_2
+  sa spoja s konektormi nulatorov. Ine prepojenie ako SS4A.36
+
+SS4B-46:
+- Konstrukcia blow-up zo 4 petersenovskych nulatorov. Ine prepojenie ako SS4A-46.
+- cc=4, striktne stabilny
+
+SS5A-44:
+- Striktne stabilny snark zostrojeny z 5 Petersenovskych nulatorov zoradenych do
+  cyklu, pricom do 4 z 5 konektorovych dvojic hran medzi nulatormi je vlozeny novy
+  vrchol.
+- Nove vrcholy su prepojene tak, ze obe hrany spajaju konektory roznych nulatorov.
+- oddness = 2, cc = 4
+
+SS5A-46:
+- Hagglundov snark radu 46 s neparnostou 4
+- Je skonstruovany metodou Semiblowup z grafu, ktory vznikne z  5-cyklu,
+  pridanim jedneho vrchola, spojenim s troma nekonsekutivnymi vrcholmi cyklu
+  a prepojenim ostavajucich dvoch vrcholov cyklu chordou.
+  oddness = 4, resistance = 3, pmi = 4
+
+SS5A-48:
+- Kombinacia blow-up (1x) a semiblow-up (4x) a piatich Petersenovskych nulatorov,
+  nahradenie jedneho semiblow-upu blow-upom v snarku SS5A-46.
+- cc = 4, odd = 4, res = 3, pmi = 4
+
+SS5A-56:
+- Snark ziskany Hagglundovou netodou blowup z kubickeho grafu radu 6, ktory
+  vznikne z 5-cyklu a dodatocneho vrchola, jeho spojenim s troma nekonsekutivnymi
+  vrcholmi kruznice a prepojenim zvysnych dvoch vrcholov kruznice hranou
+- cc = 4, odd = 4, res = 3, pmi = 4
+
+SS5B-44:
+- Cisto stabilny snark zostrojeny z 5 Petersenovskych nulatorov zoradenych do cyklu,
+  pricom do 4 z 5 konektorovych dvojic hran medzi nulatormi je vlozeny novy vrchol.
+- Nove vrcholy su prepojene tak, ze prave 1 hrana spaja konektory roznych nulatorov.
+- oddness = 2, cc = 4
+
+SS5C-44:
+- Snark z neparnostou 4 zostrojeny z 5 Petersenovskych nulatorov zoradenych do cyklu,
+  pricom do 4 z 5 konektorovych dvojic hran medzi nulatormi je vlozeny novy vrchol.
+- Nove vrcholy su prepojene tak, ze obe hrany spajaju konektory toho isteho nulatora.
+- odd = 4, res = 3, cc = 4, pmi=4
+- Izomorfny so snarkom RES3-00-44
+
+SS7-1-34:
+- Strong snark No.1 of order 34 from the Brinkmann et al. catalogue, cc=4.
+
+SS7-2-34:
+- Strong snark No.2 of order 34 from the Brinkmann et al. catalogue, cc=4.
+
+SS7-3-34:
+- Strong snark No.3 of order 34 from the Brinkmann et al. catalogue, cc=4.
+
+SS7-4-34:
+- Strong snark No.4 of order 34 from the Brinkmann et al. catalogue, cc=4.
+
+SS7-5-34:
+- Strong snark No.5 of order 34 from the Brinkmann et al. catalogue, cc=4.
+
+SS7-6-34:
+- Strong snark No.6 of order 34 from the Brinkmann et al. catalogue, cc=4.
+
+SS7-7-34:
+- Strong snark No.7 of order 34 from the Brinkmann et al. catalogue, cc=4.
+
+STF1A-54:
+- I-rozsirenie snarku STF1-52 cez dvojicu hran {[24,25],[42,43]}.
+- cc=4, odd=2, striktne stabilny, pricom STF1-52 mal odd=4 a res=4
+
+STF1B-56:
+- I-rozsirenie snarku STF1B-54 cez dvojicu hran {[29,38],[33,34]},
+  ktore boli v snarku STF1B-54 jedine dve nepotlacitelne hrany.
+- cc=4, odd=2, striktne stabilny
+
+STF1G-54:
+- I-rozsirenie snarku STF1-52 cez dvojicu hran {[2,43],[24,25]}.
+- cc=4, odd=2, striktne stabilny
+
+STF1H-54:
+- I-rozsirenie snarku STF1-52 cez dvojicu hran {[2,43],[25,26]}.
+- cc=4, odd=2, striktne stabilny, pricom STF1-52 mal odd=4 a res=4
+
+STRONG-38:
+- All known strong snarks with cc>=4 and girth>=5 of order 38
+- All have girth=5, cc=4, odd=2
+
+STRONGSA-38:
+- Vygenerovane silne snarky radu 38, vsetky cc=4
