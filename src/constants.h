@@ -2,8 +2,8 @@
 #define MY_CONSTANTS_H
 
 const char VERTEX_COLORINGS[3][3] = {
-    {'h','s','s'},
-    {'s','c','c'},
+    {'s','h','h'},
+    {'h','c','c'},
     {'m','c','c'}
 };
 

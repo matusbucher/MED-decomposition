@@ -193,8 +193,8 @@ bool cubicGraph::checkDoubleStars() {
     for (int v = 0; v < numVertices; v++) {
         bool isStarVertex = false;
         for (int i = 0; i < 3; i++) {
-            if (medColoring[v][i] == 'h') { isStarVertex = false; break; }
-            if (medColoring[v][i] == 's') isStarVertex = true;
+            if (medColoring[v][i] == 's') { isStarVertex = false; break; }
+            if (medColoring[v][i] == 'h') isStarVertex = true;
         }
         if (isStarVertex) {
             for (int i = 0; i < 3; i++) {
@@ -225,8 +225,8 @@ void cubicGraph::medColoringHelper(int index, std::vector<int>& vertices) {
             case '-': edges[0]++; uncolored.push_back(i); break;
             case 'm': edges[1]++; break;
             case 'c': edges[2]++; break;
-            case 's': edges[3]++; break;
-            case 'h': edges[4]++; break;
+            case 'h': edges[3]++; break;
+            case 's': edges[4]++; break;
             default: std::abort(); break;
         }
     }
@@ -269,7 +269,7 @@ void cubicGraph::medColoringHelper(int index, std::vector<int>& vertices) {
                 }
             }
             if (canSEdge) {
-                colorEdge(v, i, 's');
+                colorEdge(v, i, 'h');
                 medColoringHelper(index + 1, vertices);
             }
             colorEdge(v, i, 'm');
@@ -297,7 +297,7 @@ void cubicGraph::medColoringHelper(int index, std::vector<int>& vertices) {
     /* If one edge is in a cycle and two edges are not yet colored, then one of them must be
      * in a cycle and the other must be either a matching edge or a double-star point edge. */
     else if (edges[2] == 1 && edges[0] == 2) {
-        char option[] = {'m','s'};
+        char option[] = {'m','h'};
         for (int i = 0; i < 2; i++) {
             colorEdge(v, uncolored.at(i), 'c');
             for (int j = 0; j < 2; j++) {
@@ -312,11 +312,11 @@ void cubicGraph::medColoringHelper(int index, std::vector<int>& vertices) {
         // First we check, if there is no adjacent double-star.
         for (int i : uncolored) {
             for (int j = 0; j < 3; j++) {
-                if (medColoring[adjList[v][i]][j] == 's' || medColoring[adjList[v][i]][j] == 'h') return;
+                if (medColoring[adjList[v][i]][j] == 'h' || medColoring[adjList[v][i]][j] == 's') return;
             }
         }
         for (int i : uncolored) {
-            colorEdge(v, i, 's');
+            colorEdge(v, i, 'h');
         }
         medColoringHelper(index + 1, vertices);
     }
@@ -325,13 +325,13 @@ void cubicGraph::medColoringHelper(int index, std::vector<int>& vertices) {
     else if (edges[3] == 2 && edges[0] == 1) {
         // First we check, if there is no adjacent double-star.
         for (int i = 0; i < 3; i++) {
-            if (medColoring[v][i] == 's') {
+            if (medColoring[v][i] == 'h') {
                 for (int j = 0; j < 3; j++) {
-                    if (j != adjListIndices[adjList[v][i]][v] && (medColoring[adjList[v][i]][j] == 's' || medColoring[adjList[v][i]][j] == 'h')) return;
+                    if (j != adjListIndices[adjList[v][i]][v] && (medColoring[adjList[v][i]][j] == 'h' || medColoring[adjList[v][i]][j] == 's')) return;
                 }
             }
         }
-        colorEdge(v, uncolored.at(0), 'h');
+        colorEdge(v, uncolored.at(0), 's');
         medColoringHelper(index + 1, vertices);
     }
 
@@ -345,7 +345,7 @@ void cubicGraph::medColoringHelper(int index, std::vector<int>& vertices) {
             if (medColoring[v][i] == '-') {
                 bool canBeS = true;
                 for (int j = 0; j < 3; j++) {
-                    if (medColoring[adjList[v][i]][j] == 's' || medColoring[adjList[v][i]][j] == 'h') {
+                    if (medColoring[adjList[v][i]][j] == 'h' || medColoring[adjList[v][i]][j] == 's') {
                         canBeS = false; break;
                     }
                 }
@@ -361,8 +361,8 @@ void cubicGraph::medColoringHelper(int index, std::vector<int>& vertices) {
             medColoringHelper(index + 1, vertices);
         }
         for (int i : canBeSEdges) {
-            colorEdge(v, i, 's');
-            colorEdge(v, (i == uncolored.at(0)) ? uncolored.at(1) : uncolored.at(0), 'h');
+            colorEdge(v, i, 'h');
+            colorEdge(v, (i == uncolored.at(0)) ? uncolored.at(1) : uncolored.at(0), 's');
             medColoringHelper(index + 1, vertices);
         }
     }
