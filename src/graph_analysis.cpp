@@ -35,8 +35,8 @@ void analyzeGraphs(std::istream& in, std::ostream& out, OutputMode mode, bool sh
     auto end_time = std::chrono::high_resolution_clock::now();
 
     if (showTime) {
-        auto execution_time = std::chrono::duration_cast<std::chrono::milliseconds>(start_time - end_time);
-        out << "Execution time: " << execution_time.count() << "milliseconds.\n";
+        auto execution_time = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+        out << "Execution time: " << execution_time.count() << " milliseconds.\n";
     }
 }
 
