@@ -1,3 +1,5 @@
 .vscode
-out
-cryptominisat
+.idea
+bin/
+build/
+cryptominisat/
