@@ -1,4 +1,5 @@
-#include <options.h>
+#include <parsing.h>
+#include <specifiers.h>
 #include <messages.h>
 #include <output_modes.h>
 
@@ -26,7 +27,7 @@ void checkSyntax(char** begin, char** end) {
 
     for (char** itr = begin; itr < end; itr++) {
         if (strcmp(*itr, "help") == 0) {
-            std::cout << HELP_MESSAGE;
+            std::cout << helpMessage();
             exit(0);
         }
 

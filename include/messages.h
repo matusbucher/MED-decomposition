@@ -1,40 +1,31 @@
 #include <string>
+#include <unordered_set>
 
 #ifndef MESSAGES_H
 #define MESSAGES_H
 
-static const std::string USE_HELP_MESSAGE = "Use parameter 'help' for usage description.\n";
+static const std::string PROGRAM_NAME = "med";
 
-static const std::string HELP_MESSAGE = "TODO\n";
+static const std::string USE_HELP_MESSAGE = "Use parameter 'help' for usage description.\n";
 
 static const std::string NOT_IMPLEMENTED_MODE_MESSAGE = "Error : Given output mode is not implemented yet.\n";
 
-inline std::string doubleOptionMessage(std::string option) {
-    return "Invalid syntax : Found two parameters of the same option '" + option + "'. Use only one of them.\n";
-}
+std::string optionSpecifiersHelp(const std::unordered_set<std::string> specifiers, const std::string extraArgument);
 
-inline std::string invalidParameterMessage(std::string parameter) {
-    return "Inavlid syntax : A parameter cannot be found that matches parameter '" + parameter + "'.\n" + USE_HELP_MESSAGE;
-}
+std::string helpMessage();
 
-inline std::string noFilenameMessage(std::string specifier) {
-    return "Invalid syntax : Found no filename after parameter '" + specifier + "'. Use parameter '" + specifier + "' with a path to file.\n";
-}
+std::string doubleOptionMessage(const std::string option);
 
-inline std::string fileNotFoundMessage(std::string filename) {
-    return "Error : File '" + filename + "' does not exist.\n";
-}
+std::string invalidParameterMessage(const std::string parameter);
 
-inline std::string cannotOpenFileMessage(std::string filename) {
-    return "Error : Cannot open file '" + filename + "'.\n";
-}
+std::string noFilenameMessage(const std::string specifier);
 
-inline std::string noModenameMessage(std::string specifier) {
-    return "Invalid syntax : Found no mode specifier after parameter '" + specifier + "'.\n" + USE_HELP_MESSAGE;
-}
+std::string fileNotFoundMessage(const std::string filename);
 
-inline std::string invalidModeMessage(std::string modename) {
-    return "Invalid syntax : Mode specifier '" + modename + "' does not match any available modes.\n" + USE_HELP_MESSAGE;
-}
+std::string cannotOpenFileMessage(const std::string filename);
+
+std::string noModenameMessage(const std::string specifier);
+
+std::string invalidModeMessage(const std::string modename);
 
 #endif
