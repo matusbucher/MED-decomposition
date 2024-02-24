@@ -9,7 +9,7 @@ HEAD_DIR	:= include
 OBJ_DIR 	:= build
 BIN_DIR		:= bin
 
-EXECUTABLE	:= $(BIN_DIR)/main
+EXECUTABLE	:= $(BIN_DIR)/med
 SOURCES		:= $(wildcard $(SRC_DIR)/*.cpp)
 INCLUDES	:= $(wildcard $(HEAD_DIR)/*.h)
 OBJECTS		:= $(SOURCES:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
