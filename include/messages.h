@@ -10,8 +10,6 @@ static const std::string USE_HELP_MESSAGE = "Use parameter 'help' for usage desc
 
 static const std::string NOT_IMPLEMENTED_MODE_MESSAGE = "Error : Given output mode is not implemented yet.\n";
 
-std::string optionSpecifiersHelp(const std::unordered_set<std::string> specifiers, const std::string extraArgument);
-
 std::string helpMessage();
 
 std::string doubleOptionMessage(const std::string option);

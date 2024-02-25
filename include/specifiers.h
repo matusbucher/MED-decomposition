@@ -5,10 +5,10 @@
 #define SPECIFIERS_H
 
 /* Specifies the input file / stream (a file name is expected after the specifier), stdin is default. */
-static const std::unordered_set<std::string> INPUT_OPTION_SPECIFIERS { "--input", "-in", "-i" };
+static const std::unordered_set<std::string> INPUT_OPTION_SPECIFIERS { "--input", "--in", "-i" };
 
 /* Specifies the output file / stream (a file name is expected after the specifier), stdout is default. */
-static const std::unordered_set<std::string> OUTPUT_OPTION_SPECIFIERS { "--output", "-out", "-o" };
+static const std::unordered_set<std::string> OUTPUT_OPTION_SPECIFIERS { "--output", "--out", "-o" };
 
 /* Specifies the output format mode, but some modes can also affect run of the program (a mode name is expected
    after the specifier), "only result" mode is default. */
