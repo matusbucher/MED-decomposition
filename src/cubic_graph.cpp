@@ -2,7 +2,6 @@
 
 #include <algorithm>
 #include <queue>
-#include <cassert>
 #include <cstring>
 #include <vector>
 #include <unordered_set>
@@ -52,15 +51,32 @@ void CubicGraph::readGraph(std::istream& in) {
     }
 
     for (int u = 0; u < verticesCount; u++) {
+        std::unordered_set<int> adjacentVertices;
         for (int i = 0; i < 3; i++) {
             if (!in.good()) {
-                std::cerr << "Error reading graph\n";
-                return;
+                std::cerr << "Error : Cannot read the graph (problem with input stream or the end of stream reached when more input was expected)\n";
+                exit(3);
             }
             int v; in >> v;
-            assert(v >= 0 && v <= verticesCount-1 && v != u && "Invalid vertex input");
+            if (v < 0 || v > verticesCount-1) {
+                std::cerr << "Invalid vertex input : vertex '" << v << "' out of range\n";
+                exit(3);
+            }
+            if (v == u) {
+                std::cerr << "Invalid vertex input : vertex '" << u << "' has a loop\n";
+                exit(3);
+            }
+            if (adjacentVertices.count(v)) {
+                std::cerr << "Invalid vertex input : double edge from vertex '" << u << "' to vertex '" << v << "'\n";
+                exit(3);
+            }
+            if (adjListIndices[v][u] != -1 && adjList[v][adjListIndices[v][u]] != u) {
+                std::cerr << "Invalid vertex input : trying to make edge from vertex '" << u << "' to vertex '" << v << "' while vertex '" << u << "' is already connected to three other vertices\n";
+                exit(3);
+            }
             adjList[u][i] = v;
             adjListIndices[u][v] = i;
+            adjacentVertices.insert(v);
         }
     }
 
@@ -76,7 +92,7 @@ void CubicGraph::readGraph(std::istream& in) {
 
 void CubicGraph::printGraph(std::ostream& out) {
     if (!out.good()) {
-        std::cerr << "Error printing graph\n";
+        std::cerr << "Error : Cannot print the graph\n";
         return;
     }
     out << "Printing graph as adjacency list:\n";
