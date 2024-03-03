@@ -4,26 +4,31 @@
 #ifndef MESSAGES_H
 #define MESSAGES_H
 
+namespace message
+{
+
 static const std::string PROGRAM_NAME = "med";
 
-static const std::string USE_HELP_MESSAGE = "Use parameter 'help' for usage description.\n";
+static const std::string USE_HELP = "Use parameter 'help' for usage description.\n";
 
-static const std::string NOT_IMPLEMENTED_MODE_MESSAGE = "Error : Given output mode is not implemented yet.\n";
+static const std::string NOT_IMPLEMENTED_MODE = "Error : Given output mode is not implemented yet.\n";
 
-std::string helpMessage();
+std::string help();
 
-std::string doubleOptionMessage(const std::string option);
+std::string doubleOption(const std::string option);
 
-std::string invalidParameterMessage(const std::string parameter);
+std::string invalidParameter(const std::string parameter);
 
-std::string noFilenameMessage(const std::string specifier);
+std::string noFilename(const std::string specifier);
 
-std::string fileNotFoundMessage(const std::string filename);
+std::string fileNotFound(const std::string filename);
 
-std::string cannotOpenFileMessage(const std::string filename);
+std::string cannotOpenFile(const std::string filename);
 
-std::string noModenameMessage(const std::string specifier);
+std::string noModename(const std::string specifier);
 
-std::string invalidModeMessage(const std::string modename);
+std::string invalidMode(const std::string modename);
+
+}
 
 #endif

@@ -1,4 +1,4 @@
-#include <cubic_graph.h>
+#include <CubicGraph.h>
 
 #include <algorithm>
 #include <queue>
@@ -134,7 +134,7 @@ std::vector<int> CubicGraph::bfs(int vertex) {
 std::vector<int> CubicGraph::dfs(int vertex) {
     std::vector<int> returnVec;
     std::unordered_set<int> visited;
-    dfsHelper(vertex, returnVec, visited);
+    CubicGraph::dfsHelper(vertex, returnVec, visited);
 
     return returnVec;
 }
@@ -146,7 +146,7 @@ void CubicGraph::dfsHelper(int vertex, std::vector<int>& vec, std::unordered_set
     visited.insert(vertex);
 
     for (int i = 0; i < 3; i++) {
-        dfsHelper(adjList[vertex][i], vec, visited);
+        CubicGraph::dfsHelper(adjList[vertex][i], vec, visited);
     }
 }
 
@@ -158,9 +158,9 @@ void CubicGraph::generateMedColoring(int vertex = 0) {
             for (int j = 0; j < 3; j++) medColoring[i][j] = EdgeColor::NONE;
         }
         coloringDone = false;
-        std::vector<int> vertices = dfs(vertex);
+        std::vector<int> vertices = CubicGraph::dfs(vertex);
 
-        medColoringHelper(0, vertices);
+        CubicGraph::medColoringHelper(0, vertices);
     }
 }
 
@@ -234,7 +234,7 @@ void CubicGraph::medColoringHelper(int index, std::vector<int>& vertices) {
     if (coloringDone) return;
     
     if (index == (int) vertices.size()) {
-        coloringDone = checkCycles() && checkDoubleStars();
+        coloringDone = CubicGraph::checkCycles() && CubicGraph::checkDoubleStars();
         return;
     }
 
@@ -287,9 +287,9 @@ void CubicGraph::medColoringHelper(int index, std::vector<int>& vertices) {
         for (const EdgeColor* colors : VERTEX_COLORINGS) {
             for (int r = 0; r < 3; r++) {
                 for (int i : uncolored) {
-                    colorEdge(v, i, colors[(i+r) % 3]);
+                    CubicGraph::colorEdge(v, i, colors[(i+r) % 3]);
                 }
-                medColoringHelper(index + 1, vertices);
+                CubicGraph::medColoringHelper(index + 1, vertices);
             }
         }
     }
@@ -305,29 +305,29 @@ void CubicGraph::medColoringHelper(int index, std::vector<int>& vertices) {
                 }
             }
             if (canSEdge) {
-                colorEdge(v, i, EdgeColor::STAR_POINT);
-                medColoringHelper(index + 1, vertices);
+                CubicGraph::colorEdge(v, i, EdgeColor::STAR_POINT);
+                CubicGraph::medColoringHelper(index + 1, vertices);
             }
-            colorEdge(v, i, EdgeColor::MATCHING);
+            CubicGraph::colorEdge(v, i, EdgeColor::MATCHING);
         }
-        medColoringHelper(index + 1, vertices);
+        CubicGraph::medColoringHelper(index + 1, vertices);
     }
 
     /* If one edge is a matching edge, then other two edges must be in a cycle. */
     else if (edges[1] == 1 && edges[0] + edges[2] == 2) {
         for (int i : uncolored) {
-            colorEdge(v, i, EdgeColor::CYCLE);
+            CubicGraph::colorEdge(v, i, EdgeColor::CYCLE);
         }
-        medColoringHelper(index + 1, vertices);
+        CubicGraph::medColoringHelper(index + 1, vertices);
     }
 
     /* If one edge is in a cycle, one edge is either a matching or a double-star point edge,
      * then the last edge must be in a cycle. */
     else if (edges[2] == 1 && edges[1] + edges[3] == 1 && edges[0] == 1) {
         for (int i : uncolored) {
-            colorEdge(v, i, EdgeColor::CYCLE);
+            CubicGraph::colorEdge(v, i, EdgeColor::CYCLE);
         }
-        medColoringHelper(index + 1, vertices);
+        CubicGraph::medColoringHelper(index + 1, vertices);
     }
 
     /* If one edge is in a cycle and two edges are not yet colored, then one of them must be
@@ -335,10 +335,10 @@ void CubicGraph::medColoringHelper(int index, std::vector<int>& vertices) {
     else if (edges[2] == 1 && edges[0] == 2) {
         EdgeColor option[] = {EdgeColor::MATCHING, EdgeColor::STAR_POINT};
         for (int i = 0; i < 2; i++) {
-            colorEdge(v, uncolored.at(i), EdgeColor::CYCLE);
+            CubicGraph::colorEdge(v, uncolored.at(i), EdgeColor::CYCLE);
             for (int j = 0; j < 2; j++) {
-                colorEdge(v, uncolored.at((i+1)%2), option[j]);
-                medColoringHelper(index + 1, vertices);
+                CubicGraph::colorEdge(v, uncolored.at((i+1)%2), option[j]);
+                CubicGraph::medColoringHelper(index + 1, vertices);
             }
         }
     }
@@ -352,9 +352,9 @@ void CubicGraph::medColoringHelper(int index, std::vector<int>& vertices) {
             }
         }
         for (int i : uncolored) {
-            colorEdge(v, i, EdgeColor::STAR_POINT);
+            CubicGraph::colorEdge(v, i, EdgeColor::STAR_POINT);
         }
-        medColoringHelper(index + 1, vertices);
+        CubicGraph::medColoringHelper(index + 1, vertices);
     }
 
     /* If two edges are double-star point edges, then the remaining one must be a double-star center edge. */
@@ -367,8 +367,8 @@ void CubicGraph::medColoringHelper(int index, std::vector<int>& vertices) {
                 }
             }
         }
-        colorEdge(v, uncolored.at(0), EdgeColor::STAR_POINT);
-        medColoringHelper(index + 1, vertices);
+        CubicGraph::colorEdge(v, uncolored.at(0), EdgeColor::STAR_POINT);
+        CubicGraph::medColoringHelper(index + 1, vertices);
     }
 
     /* If one edge is a double-star point edge and two edges are not yet colored, then either they must be
@@ -393,29 +393,29 @@ void CubicGraph::medColoringHelper(int index, std::vector<int>& vertices) {
             }
         }
         if (canCEdges) {
-            for (int i : uncolored) colorEdge(v, i, EdgeColor::CYCLE);
-            medColoringHelper(index + 1, vertices);
+            for (int i : uncolored) CubicGraph::colorEdge(v, i, EdgeColor::CYCLE);
+            CubicGraph::medColoringHelper(index + 1, vertices);
         }
         for (int i : canBeSEdges) {
-            colorEdge(v, i, EdgeColor::STAR_POINT);
-            colorEdge(v, (i == uncolored.at(0)) ? uncolored.at(1) : uncolored.at(0), EdgeColor::STAR_CENTER);
-            medColoringHelper(index + 1, vertices);
+            CubicGraph::colorEdge(v, i, EdgeColor::STAR_POINT);
+            CubicGraph::colorEdge(v, (i == uncolored.at(0)) ? uncolored.at(1) : uncolored.at(0), EdgeColor::STAR_CENTER);
+            CubicGraph::medColoringHelper(index + 1, vertices);
         }
     }
 
-    if (!coloringDone) for (int i : uncolored) colorEdge(v, i, EdgeColor::NONE);
+    if (!coloringDone) for (int i : uncolored) CubicGraph::colorEdge(v, i, EdgeColor::NONE);
 }
 
 EdgeColor** CubicGraph::getMedColoring() {
     if (medColoring == nullptr) {
-        generateMedColoring();
+        CubicGraph::generateMedColoring();
     }
     return medColoring;
 }
 
 bool CubicGraph::isMedDecomposable() {
     if (medColoring == nullptr) {
-        generateMedColoring();
+        CubicGraph::generateMedColoring();
     }
     if (medColoring[0][0] == EdgeColor::NONE) return false;
     return true;
@@ -427,7 +427,7 @@ void CubicGraph::countBridges() {
         for (int j = i+1; j < verticesCount; j++) {
             if (adjListIndices[i][j] != -1) {
                 adjList[i][adjListIndices[i][j]] = -1;
-                int n = dfs(i).size();
+                int n = CubicGraph::dfs(i).size();
                 adjList[i][adjListIndices[i][j]] = j;
                 if (n != verticesCount) bridgesCount++;
             }
@@ -436,6 +436,6 @@ void CubicGraph::countBridges() {
 }
 
 bool CubicGraph::isBridgeless() {
-    if (bridgesCount == -1) countBridges();
+    if (bridgesCount == -1) CubicGraph::countBridges();
     return bridgesCount == 0;
 }

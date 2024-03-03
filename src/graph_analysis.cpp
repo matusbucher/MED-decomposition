@@ -1,34 +1,34 @@
 #include <graph_analysis.h>
 #include <messages.h>
-#include <cubic_graph.h>
-#include <output_modes.h>
+#include <CubicGraph.h>
+#include <OutputMode.h>
 
 #include <iostream>
 #include <chrono>
 
-void analyzeGraphs(std::istream& in, std::ostream& out, OutputMode mode, bool showTime) {
+void graph_analysis::analyzeGraphs(std::istream& in, std::ostream& out, OutputMode mode, bool showTime) {
     auto start_time = std::chrono::high_resolution_clock::now();
 
     switch (mode)
     {
     case OutputMode::ONLY_RESULT:
-        onlyResultMode(in, out);
+        graph_analysis::onlyResultMode(in, out);
         break;
 
     case OutputMode::NOT_COLORABLE:
-        notColorableMode(in, out);
+        graph_analysis::notColorableMode(in, out);
         break;
 
     case OutputMode::NOT_COLORABLE_BRIDGELESS:
-        notColorableBridgelessMode(in, out);
+        graph_analysis::notColorableBridgelessMode(in, out);
         break;
 
     case OutputMode::COLORING:
-        coloringMode(in, out);
+        graph_analysis::coloringMode(in, out);
         break;
     
     default:
-        std::cerr << NOT_IMPLEMENTED_MODE_MESSAGE;
+        std::cerr << message::NOT_IMPLEMENTED_MODE;
         break;
     }
 
@@ -40,7 +40,7 @@ void analyzeGraphs(std::istream& in, std::ostream& out, OutputMode mode, bool sh
     }
 }
 
-void onlyResultMode(std::istream& in, std::ostream& out) {
+void graph_analysis::onlyResultMode(std::istream& in, std::ostream& out) {
     int graphsCount;
     in >> graphsCount;
 
@@ -55,7 +55,7 @@ void onlyResultMode(std::istream& in, std::ostream& out) {
     }
 }
 
-void notColorableMode(std::istream& in, std::ostream& out) {
+void graph_analysis::notColorableMode(std::istream& in, std::ostream& out) {
     int graphsCount;
     in >> graphsCount;
 
@@ -74,7 +74,7 @@ void notColorableMode(std::istream& in, std::ostream& out) {
     }
 }
 
-void notColorableBridgelessMode(std::istream& in, std::ostream& out) {
+void graph_analysis::notColorableBridgelessMode(std::istream& in, std::ostream& out) {
     int graphsCount;
     in >> graphsCount;
 
@@ -93,7 +93,7 @@ void notColorableBridgelessMode(std::istream& in, std::ostream& out) {
     }
 }
 
-void coloringMode(std::istream& in, std::ostream& out) {
+void graph_analysis::coloringMode(std::istream& in, std::ostream& out) {
     int graphsCount;
     in >> graphsCount;
 

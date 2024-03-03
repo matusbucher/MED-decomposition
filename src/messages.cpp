@@ -13,38 +13,38 @@ std::string listElementsFromSet(const std::unordered_set<std::string> set, const
     return toReturn;
 }
 
-std::string helpMessage() {
+std::string message::help() {
     const std::string TAB = "   ";
 
     std::string toReturn = "MED is a program for testing cubic graphs - whether they are MED-decomposable or not.\n\n";
 
     toReturn += "USAGE\n";
-    toReturn += TAB + PROGRAM_NAME;
-    toReturn += " [" + listElementsFromSet(INPUT_OPTION_SPECIFIERS, " | ") + " <path>]";
-    toReturn += " [" + listElementsFromSet(OUTPUT_OPTION_SPECIFIERS, " | ") + " <path>]";
-    toReturn += " [" + listElementsFromSet(MODE_OPTION_SPECIFIERS, " | ") + " <mode_name>]";
-    toReturn += " [" + listElementsFromSet(TIME_OPTION_SPECIFIERS, " | ") + "]";
+    toReturn += TAB + message::PROGRAM_NAME;
+    toReturn += " [" + listElementsFromSet(specifiers::INPUT_OPTION, " | ") + " <path>]";
+    toReturn += " [" + listElementsFromSet(specifiers::OUTPUT_OPTION, " | ") + " <path>]";
+    toReturn += " [" + listElementsFromSet(specifiers::MODE_OPTION, " | ") + " <mode_name>]";
+    toReturn += " [" + listElementsFromSet(specifiers::TIME_OPTION, " | ") + "]";
     toReturn += "\n\n";
 
     toReturn += "OPTIONS\n";
-    toReturn += TAB + listElementsFromSet(INPUT_OPTION_SPECIFIERS, ", ") + "\n";
+    toReturn += TAB + listElementsFromSet(specifiers::INPUT_OPTION, ", ") + "\n";
     toReturn += TAB + TAB + "Specifies input file from which the program should read graphs. Default is stadnard input. For input format,\n";
     toReturn += TAB + TAB + "see 'INPUT FORMAT' section.\n";
-    toReturn += TAB + listElementsFromSet(OUTPUT_OPTION_SPECIFIERS, ", ") + "\n";
+    toReturn += TAB + listElementsFromSet(specifiers::OUTPUT_OPTION, ", ") + "\n";
     toReturn += TAB + TAB + "Specifies output file to which the program should write results. Default is standard output.\n";
-    toReturn += TAB + listElementsFromSet(MODE_OPTION_SPECIFIERS, ", ") + "\n";
+    toReturn += TAB + listElementsFromSet(specifiers::MODE_OPTION, ", ") + "\n";
     toReturn += TAB + TAB + "Specifies formating of output. Use with one of the following mode names (default is 'only result' mode):\n";
-    toReturn += TAB + TAB + listElementsFromSet(ONLY_RESULT_MODE_SPECIFIERS, " / ") + "\n";
+    toReturn += TAB + TAB + listElementsFromSet(specifiers::ONLY_RESULT_MODE, " / ") + "\n";
     toReturn += TAB + TAB + TAB + "- Prints only the answer 'true' or 'false' ('true' = graph is MED-decomposable).\n";
-    toReturn += TAB + TAB + listElementsFromSet(NOT_COLORABLE_MODE_SPECIFIERS, " / ") + "\n";
+    toReturn += TAB + TAB + listElementsFromSet(specifiers::NOT_COLORABLE_MODE, " / ") + "\n";
     toReturn += TAB + TAB + TAB + "- Prints only numbers of those graphs, that are not MED-decomposable.\n";
-    toReturn += TAB + TAB + listElementsFromSet(NOT_COLORABLE_BRIDGELESS_MODE_SPECIFIERS, " / ") + "\n";
+    toReturn += TAB + TAB + listElementsFromSet(specifiers::NOT_COLORABLE_BRIDGELESS_MODE, " / ") + "\n";
     toReturn += TAB + TAB + TAB + "- Prints only numbers of those graphs, that are not MED-decomposable and bridgeless.\n";
-    toReturn += TAB + TAB + listElementsFromSet(COLORING_MODE_SPECIFIERS, " / ") + "\n";
+    toReturn += TAB + TAB + listElementsFromSet(specifiers::COLORING_MODE, " / ") + "\n";
     toReturn += TAB + TAB + TAB + "- Prints one of possible MED decomposition or 'false' if there is not such decomposition. Output format is\n";
     toReturn += TAB + TAB + TAB + "  similar to the input format, except 'colors' are added to each edge. 'm' is matching edge, 'c' is cycle\n";
     toReturn += TAB + TAB + TAB + "  edge, 's' is double-star center edge and 'h' is double-star point edge.\n";
-    toReturn += TAB + listElementsFromSet(TIME_OPTION_SPECIFIERS, ", ") + "\n";
+    toReturn += TAB + listElementsFromSet(specifiers::TIME_OPTION, ", ") + "\n";
     toReturn += TAB + TAB + "Adds execution time at the end of the output.\n\n";
 
     toReturn += "INPUT FORMAT\n";
@@ -78,30 +78,30 @@ std::string helpMessage() {
     return toReturn;
 }
 
-std::string doubleOptionMessage(const std::string option) {
+std::string message::doubleOption(const std::string option) {
     return "Invalid syntax : Found two parameters of the same option '" + option + "'. Use only one of them.\n";
 }
 
-std::string invalidParameterMessage(const std::string parameter) {
-    return "Inavlid syntax : A parameter cannot be found that matches parameter '" + parameter + "'.\n" + USE_HELP_MESSAGE;
+std::string message::invalidParameter(const std::string parameter) {
+    return "Inavlid syntax : A parameter cannot be found that matches parameter '" + parameter + "'.\n" + USE_HELP;
 }
 
-std::string noFilenameMessage(const std::string specifier) {
+std::string message::noFilename(const std::string specifier) {
     return "Invalid syntax : Found no filename after parameter '" + specifier + "'. Use parameter '" + specifier + "' with a path to file.\n";
 }
 
-std::string fileNotFoundMessage(const std::string filename) {
+std::string message::fileNotFound(const std::string filename) {
     return "Error : File '" + filename + "' does not exist.\n";
 }
 
-std::string cannotOpenFileMessage(const std::string filename) {
+std::string message::cannotOpenFile(const std::string filename) {
     return "Error : Cannot open file '" + filename + "'.\n";
 }
 
-std::string noModenameMessage(const std::string specifier) {
-    return "Invalid syntax : Found no mode specifier after parameter '" + specifier + "'.\n" + USE_HELP_MESSAGE;
+std::string message::noModename(const std::string specifier) {
+    return "Invalid syntax : Found no mode specifier after parameter '" + specifier + "'.\n" + USE_HELP;
 }
 
-std::string invalidModeMessage(const std::string modename) {
-    return "Invalid syntax : Mode specifier '" + modename + "' does not match any available modes.\n" + USE_HELP_MESSAGE;
+std::string message::invalidMode(const std::string modename) {
+    return "Invalid syntax : Mode specifier '" + modename + "' does not match any available modes.\n" + USE_HELP;
 }
