@@ -88,3 +88,7 @@ $RECYCLE.BIN/
 *.msi
 *.msm
 *.msp
+
+
+##### Minisat Solver files
+minisat*/
