@@ -40,12 +40,12 @@ MEDTester::CubicGraph::CubicGraph(const MEDTester::Matrix& adjList, bool checkGr
 MEDTester::CubicGraph::~CubicGraph() {}
 
 
-int MEDTester::CubicGraph::getVerticesCount()
+int MEDTester::CubicGraph::getVerticesCount() const
 {
     return mVerticesCount;
 }
 
-MEDTester::Matrix MEDTester::CubicGraph::getAdjList()
+MEDTester::Matrix MEDTester::CubicGraph::getAdjList() const
 {
     return mAdjList;
 }
@@ -59,7 +59,7 @@ MEDTester::Decomposition MEDTester::CubicGraph::getDecomposition()
 }
 
 
-bool MEDTester::CubicGraph::printGraph(std::ostream& out)
+bool MEDTester::CubicGraph::printGraph(std::ostream& out) const
 {
     if (!out.good()) {
         return false;
@@ -76,7 +76,7 @@ bool MEDTester::CubicGraph::printGraph(std::ostream& out)
 }
 
 
-std::vector<int> MEDTester::CubicGraph::bfs(int vertex)
+std::vector<int> MEDTester::CubicGraph::bfs(int vertex) const
 {
     std::vector<int> returnVector;
     std::unordered_set<int> visited;
@@ -103,7 +103,7 @@ std::vector<int> MEDTester::CubicGraph::bfs(int vertex)
     return returnVector;
 }
 
-std::vector<int> MEDTester::CubicGraph::dfs(int vertex)
+std::vector<int> MEDTester::CubicGraph::dfs(int vertex) const
 {
     std::vector<int> returnVector;
     std::unordered_set<int> visited;
@@ -112,7 +112,7 @@ std::vector<int> MEDTester::CubicGraph::dfs(int vertex)
     return returnVector;
 }
 
-void MEDTester::CubicGraph::dfsHelper(int vertex, std::vector<int>& vec, std::unordered_set<int>& visited)
+void MEDTester::CubicGraph::dfsHelper(int vertex, std::vector<int>& vec, std::unordered_set<int>& visited) const
 {
     if (vertex < 0 || visited.find(vertex) != visited.end()) return;
 
@@ -333,7 +333,7 @@ void MEDTester::CubicGraph::decompositionHelper(int index, std::vector<int>& ver
 }
 
 
-bool MEDTester::CubicGraph::checkCycles()
+bool MEDTester::CubicGraph::checkCycles() const
 {
     bool* checked = new bool[mVerticesCount]();
 
@@ -375,7 +375,7 @@ bool MEDTester::CubicGraph::checkCycles()
     return true;
 }
 
-bool MEDTester::CubicGraph::checkDoubleStars()
+bool MEDTester::CubicGraph::checkDoubleStars() const
 {
     std::unordered_set<int> starVertices;
 

@@ -19,16 +19,16 @@ public:
     ~CubicGraph();
 
     // Getters:
-    int getVerticesCount();
-    MEDTester::Matrix getAdjList();
+    int getVerticesCount() const;
+    MEDTester::Matrix getAdjList() const;
     MEDTester::Decomposition getDecomposition();
 
     // Functions for reading in and printing out the graph:
-    bool printGraph(std::ostream& out);
+    bool printGraph(std::ostream& out) const;
 
     // Standard utility functions:
-    std::vector<int> bfs(int vertex);
-    std::vector<int> dfs(int vertex);
+    std::vector<int> bfs(int vertex) const;
+    std::vector<int> dfs(int vertex) const;
 
     // Functions for checking properties of the graph:
     bool isDecomposable();
@@ -43,14 +43,14 @@ private:
     int mBridgesCount;
     bool mHasBridges;
 
-    void dfsHelper(int vertex, std::vector<int>& vec, std::unordered_set<int>& visited);
+    void dfsHelper(int vertex, std::vector<int>& vec, std::unordered_set<int>& visited) const;
 
     void colorEdge(int vertex, int index, MEDTester::EdgeType color);
     void generateDecomposition(int vertex);
     void decompositionHelper(int index, std::vector<int>& vertices);
 
-    bool checkCycles();
-    bool checkDoubleStars();
+    bool checkCycles() const;
+    bool checkDoubleStars() const;
 
     void countBridges(bool findOnlyOne);
 };
