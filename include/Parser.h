@@ -5,7 +5,6 @@
 
 #include <string>
 #include <vector>
-#include <set>
 #include <exception>
 
 namespace MedTester
@@ -31,7 +30,7 @@ public:
     {
         const std::string name;
         const std::string description;
-        const std::set<std::string> specifiers;
+        const std::vector<std::string> specifiers;
         const bool hasArg;
         const T defaultValue;
     };
@@ -41,7 +40,7 @@ public:
     {
         const std::string name;
         const std::string description;
-        const std::set<std::string> specifiers;
+        const std::vector<std::string> specifiers;
         const T value;
     };
 
@@ -119,7 +118,7 @@ private:
     static inline std::string UNKNOWN_OUTPUT_MODE_MESSAGE(const std::string& mode);
 
     static std::string formatText(const std::string& text, size_t indent, size_t width);
-    static std::string joinToString(std::set<std::string> list, const std::string& prefix, const std::string& suffix, const std::string& separator);
+    static std::string joinToString(std::vector<std::string> list, const std::string& prefix, const std::string& suffix, const std::string& separator);
 };
 
 } // namespace MedTester

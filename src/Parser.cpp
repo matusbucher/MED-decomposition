@@ -4,7 +4,6 @@
 
 #include <string>
 #include <cstring>
-#include <set>
 #include <unordered_set>
 #include <algorithm>
 #include <iostream>
@@ -186,19 +185,19 @@ void MedTester::Parser::checkSyntax(char** begin, char** end)
         std::string optionName;
         bool optionHasArg;
 
-        if (MedTester::Parser::INPUT_FILENAME_OPTION_INFO.specifiers.count(*it)) {
+        if (std::find(MedTester::Parser::INPUT_FILENAME_OPTION_INFO.specifiers.begin(), MedTester::Parser::INPUT_FILENAME_OPTION_INFO.specifiers.end(), *it) != MedTester::Parser::INPUT_FILENAME_OPTION_INFO.specifiers.end()) {
             optionName = INPUT_FILENAME_OPTION_INFO.name;
             optionHasArg = INPUT_FILENAME_OPTION_INFO.hasArg;
         }
-        else if (MedTester::Parser::OUTPUT_FILENAME_OPTION_INFO.specifiers.count(*it)) {
+        else if (std::find(MedTester::Parser::OUTPUT_FILENAME_OPTION_INFO.specifiers.begin(), MedTester::Parser::OUTPUT_FILENAME_OPTION_INFO.specifiers.end(), *it) != MedTester::Parser::OUTPUT_FILENAME_OPTION_INFO.specifiers.end()) {
             optionName = OUTPUT_FILENAME_OPTION_INFO.name;
             optionHasArg = OUTPUT_FILENAME_OPTION_INFO.hasArg;
         }
-        else if (MedTester::Parser::OUTPUT_MODE_OPTION_INFO.specifiers.count(*it)) {
+        else if (std::find(MedTester::Parser::OUTPUT_MODE_OPTION_INFO.specifiers.begin(), MedTester::Parser::OUTPUT_MODE_OPTION_INFO.specifiers.end(), *it) != MedTester::Parser::OUTPUT_MODE_OPTION_INFO.specifiers.end()) {
             optionName = OUTPUT_MODE_OPTION_INFO.name;
             optionHasArg = OUTPUT_MODE_OPTION_INFO.hasArg;
         }
-        else if (MedTester::Parser::SHOW_TIME_OPTION_INFO.specifiers.count(*it)) {
+        else if (std::find(MedTester::Parser::SHOW_TIME_OPTION_INFO.specifiers.begin(), MedTester::Parser::SHOW_TIME_OPTION_INFO.specifiers.end(), *it) != MedTester::Parser::SHOW_TIME_OPTION_INFO.specifiers.end()) {
             optionName = SHOW_TIME_OPTION_INFO.name;
             optionHasArg = SHOW_TIME_OPTION_INFO.hasArg;
         }
@@ -302,7 +301,7 @@ bool MedTester::Parser::parseOutputMode()
 
     std::string modeSpecifier = MedTester::Parser::getOptionArgument(specifier);
     for (MedTester::Parser::ModeInfo<MedTester::OutputMode> mode : MedTester::Parser::AVAILABLE_OUTPUTMODES) {
-        if (mode.specifiers.count(modeSpecifier)) {
+        if (std::find(mode.specifiers.begin(), mode.specifiers.end(), modeSpecifier) != mode.specifiers.end()) {
             mOutputMode = mode.value;
             return true;
         }
@@ -458,14 +457,16 @@ std::string MedTester::Parser::formatText(const std::string& text, size_t indent
     return toReturn;
 }
 
-std::string MedTester::Parser::joinToString(std::set<std::string> list, const std::string& prefix, const std::string& suffix, const std::string& separator)
+std::string MedTester::Parser::joinToString(std::vector<std::string> list, const std::string& prefix, const std::string& suffix, const std::string& separator)
 {
     std::string toReturn = prefix;
-    std::set<std::string>::iterator it = list.begin();
-    
-    toReturn += *(it++);
-    while (it != list.end())
-        toReturn += separator + *(it++);
+    if (!list.empty()) {
+        std::vector<std::string>::iterator it = list.begin();
+        toReturn += *it;
+        while (++it != list.end()) {
+            toReturn += separator + *it;
+        }
+    }
     toReturn += suffix;
 
     return toReturn;
