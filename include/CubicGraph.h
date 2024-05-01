@@ -1,31 +1,27 @@
 #ifndef MEDTESTER_CUBIC_GRAPH_H_
 #define MEDTESTER_CUBIC_GRAPH_H_
 
+#include "typedefs.h"
+
 #include <vector>
 #include <unordered_set>
 #include <iostream>
 
 
+namespace MEDTester
+{
+
 class CubicGraph
 {
 public:
-    enum class EdgeColor
-    {
-        NONE,
-        MATCHING,
-        CYCLE,
-        STAR_POINT,
-        STAR_CENTER
-    };
-
     // Constructors and deconstructor:
-    CubicGraph(const std::vector<std::vector<int>>& adjList, bool checkGraph);
+    CubicGraph(const MEDTester::AdjacencyList& adjList, bool checkGraph);
     ~CubicGraph();
 
     // Getters:
     int getVerticesCount();
-    std::vector<std::vector<int>> getAdjList();
-    std::vector<std::vector<EdgeColor>> getMedColoring();
+    MEDTester::AdjacencyList getAdjList();
+    MEDTester::Decomposition getDecomposition();
 
     // Functions for reading in and printing out the graph:
     bool printGraph(std::ostream& out);
@@ -35,30 +31,30 @@ public:
     std::vector<int> dfs(int vertex);
 
     // Functions for checking properties of the graph:
-    bool isMedDecomposable();
+    bool isDecomposable();
     bool isBridgeless();
 
 private:
     int mVerticesCount;
-    // note: for each u, v, if (u,v) is edge, than adjListIndices[u][v] = x such that adjList[u][x] = v,
-    // otherwise adjListIndices[u][v] = -1
-    std::vector<std::vector<int>> mAdjList;
+    MEDTester::AdjacencyList mAdjList;
     std::vector<std::vector<int>> mAdjListIndices;
-    std::vector<std::vector<CubicGraph::EdgeColor>> mMedColoring;
+    MEDTester::Decomposition mDecomposition;
     bool mColoringDone;
     int mBridgesCount;
     bool mHasBridges;
 
     void dfsHelper(int vertex, std::vector<int>& vec, std::unordered_set<int>& visited);
 
-    void colorEdge(int vertex, int index, EdgeColor color);
-    void generateMedColoring(int vertex);
-    void medColoringHelper(int index, std::vector<int>& vertices);
+    void colorEdge(int vertex, int index, MEDTester::EdgeType color);
+    void generateDecomposition(int vertex);
+    void decompositionHelper(int index, std::vector<int>& vertices);
 
     bool checkCycles();
     bool checkDoubleStars();
 
     void countBridges(bool findOnlyOne);
 };
+
+} // namespace MEDTester
 
 #endif // MEDTESTER_CUBIC_GRAPH_H_

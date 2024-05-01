@@ -1,5 +1,5 @@
-#ifndef MEDTESTER_UTILS_PARSER_H_
-#define MEDTESTER_UTILS_PARSER_H_
+#ifndef MEDTESTER_PARSER_H_
+#define MEDTESTER_PARSER_H_
 
 #include "OutputMode.h"
 
@@ -7,7 +7,7 @@
 #include <vector>
 #include <exception>
 
-namespace MedTester
+namespace MEDTester
 {
 
 class Parser
@@ -45,18 +45,18 @@ public:
     };
 
     // Option infos:
-    static const MedTester::Parser::OptionInfo<std::string> INPUT_FILENAME_OPTION_INFO;
-    static const MedTester::Parser::OptionInfo<std::string> OUTPUT_FILENAME_OPTION_INFO;
-    static const MedTester::Parser::OptionInfo<MedTester::OutputMode> OUTPUT_MODE_OPTION_INFO;
-    static const MedTester::Parser::OptionInfo<bool> SHOW_TIME_OPTION_INFO;
+    static const MEDTester::Parser::OptionInfo<std::string> INPUT_FILENAME_OPTION_INFO;
+    static const MEDTester::Parser::OptionInfo<std::string> OUTPUT_FILENAME_OPTION_INFO;
+    static const MEDTester::Parser::OptionInfo<MEDTester::OutputMode> OUTPUT_MODE_OPTION_INFO;
+    static const MEDTester::Parser::OptionInfo<bool> SHOW_TIME_OPTION_INFO;
 
     // Mode infos:
-    static const MedTester::Parser::ModeInfo<MedTester::OutputMode> ONLY_RESULT_MODE_INFO;
-    static const MedTester::Parser::ModeInfo<MedTester::OutputMode> NOT_DECOMPOSABLE_MODE_INFO;
-    static const MedTester::Parser::ModeInfo<MedTester::OutputMode> NOT_DECOMPOSABLE_BRIDGELESS_MODE_INFO;
-    static const MedTester::Parser::ModeInfo<MedTester::OutputMode> COLORING_MODE_INFO;
+    static const MEDTester::Parser::ModeInfo<MEDTester::OutputMode> ONLY_RESULT_MODE_INFO;
+    static const MEDTester::Parser::ModeInfo<MEDTester::OutputMode> NOT_DECOMPOSABLE_MODE_INFO;
+    static const MEDTester::Parser::ModeInfo<MEDTester::OutputMode> NOT_DECOMPOSABLE_BRIDGELESS_MODE_INFO;
+    static const MEDTester::Parser::ModeInfo<MEDTester::OutputMode> COLORING_MODE_INFO;
 
-    static const std::vector<MedTester::Parser::ModeInfo<MedTester::OutputMode>> AVAILABLE_OUTPUTMODES;
+    static const std::vector<MEDTester::Parser::ModeInfo<MEDTester::OutputMode>> AVAILABLE_OUTPUTMODES;
 
     // Help speciefier:
     static const std::string HELP_SPECIFIER;
@@ -70,13 +70,13 @@ public:
     char** getEnd() const;
     std::string getInputFilename() const;
     std::string getOutputFilename() const;
-    MedTester::OutputMode getOutputMode() const;
+    MEDTester::OutputMode getOutputMode() const;
     bool getShowTime() const;
 
     void setArgumentRange(char** begin, char** end);
     void setInputFilename(const std::string& filename);
     void setOutputFilename(const std::string& filename);
-    void setOutputMode(MedTester::OutputMode outputMode);
+    void setOutputMode(MEDTester::OutputMode outputMode);
     void setShowTime(bool showTime);
 
     // Static and nonstatic parsing tools:
@@ -107,7 +107,7 @@ private:
     // Parsed values:
     std::string mInputFilename;          // If empty, stdin should be used.
     std::string mOutputFilename;         // If empty, stdout should be used.
-    MedTester::OutputMode mOutputMode;
+    MEDTester::OutputMode mOutputMode;
     bool mShowTime;
 
     // Private static constants, messages and utility functions:
@@ -121,6 +121,6 @@ private:
     static std::string joinToString(std::vector<std::string> list, const std::string& prefix, const std::string& suffix, const std::string& separator);
 };
 
-} // namespace MedTester
+} // namespace MEDTester
 
-#endif // MEDTESTER_UTILS_PARSER_H_
+#endif // MEDTESTER_PARSER_H_

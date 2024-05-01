@@ -9,8 +9,8 @@ int main(int argc, char* argv[]) {
     char** end = argv + argc;
 
     try {
-        MedTester::Parser parser(begin, end);
-        MedTester::GraphAnalyser analyser(parser);
+        MEDTester::Parser parser(begin, end);
+        MEDTester::GraphAnalyser analyser(parser);
         analyser.analyze();
     }
     catch (const std::exception& e) {

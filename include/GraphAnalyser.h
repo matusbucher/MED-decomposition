@@ -1,15 +1,16 @@
-#ifndef MEDTESTER_UTILS_GRAPH_ANALYSER_H_
-#define MEDTESTER_UTILS_GRAPH_ANALYSER_H_
+#ifndef MEDTESTER_GRAPH_ANALYSER_H_
+#define MEDTESTER_GRAPH_ANALYSER_H_
 
+#include "typedefs.h"
 #include "OutputMode.h"
 #include "Parser.h"
 
-#include "CubicGraph.h"
-
 #include <string>
 #include <iostream>
+#include <exception>
 
-namespace MedTester
+
+namespace MEDTester
 {
 
 class GraphAnalyser
@@ -40,8 +41,8 @@ public:
     };
 
     // Constructors and deconstructor:
-    GraphAnalyser(MedTester::Parser& parser);
-    GraphAnalyser(const std::string& inputFilename, const std::string& outputFilename, MedTester::OutputMode outputMode, bool showTime);
+    GraphAnalyser(MEDTester::Parser& parser);
+    GraphAnalyser(const std::string& inputFilename, const std::string& outputFilename, MEDTester::OutputMode outputMode, bool showTime);
     ~GraphAnalyser();
 
     // Standard analysis function
@@ -51,7 +52,7 @@ private:
     // Options for graph analysis (set in constructor):
     std::string mInputFilename;
     std::string mOutputFilename;
-    MedTester::OutputMode mOutputMode;
+    MEDTester::OutputMode mOutputMode;
     bool mShowTime;
 
     // Analysis functions for each output mode:
@@ -66,9 +67,9 @@ private:
     static inline std::string CANNOT_OPEN_FILE_MESSAGE(const std::string& filename);
 
     static int getInt(std::istream& in, const std::string& what);
-    static std::vector<std::vector<int>> getAdjList(std::istream& in, int graphNum, bool errorCheck);
+    static MEDTester::AdjacencyList getAdjList(std::istream& in, int graphNum, bool errorCheck);
 };
 
-} // namespace MedTester
+} // namespace MEDTester
 
-#endif // MEDTESTER_UTILS_GRAPH_ANALYSER_H_
+#endif // MEDTESTER_GRAPH_ANALYSER_H_

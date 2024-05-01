@@ -10,7 +10,7 @@
 #include <stdexcept>
 
 
-const MedTester::Parser::OptionInfo<std::string> MedTester::Parser::INPUT_FILENAME_OPTION_INFO
+const MEDTester::Parser::OptionInfo<std::string> MEDTester::Parser::INPUT_FILENAME_OPTION_INFO
 {
     "input filename",
     "Specifies input file from which the program should read graphs. If omitted, standard input is used.",
@@ -19,7 +19,7 @@ const MedTester::Parser::OptionInfo<std::string> MedTester::Parser::INPUT_FILENA
     std::string()
 };
 
-const MedTester::Parser::OptionInfo<std::string> MedTester::Parser::OUTPUT_FILENAME_OPTION_INFO
+const MEDTester::Parser::OptionInfo<std::string> MEDTester::Parser::OUTPUT_FILENAME_OPTION_INFO
 {
     "output filename",
     "Specifies output file to which the program should write results. If omitted, standard output is used.",
@@ -28,16 +28,16 @@ const MedTester::Parser::OptionInfo<std::string> MedTester::Parser::OUTPUT_FILEN
     std::string()
 };
 
-const MedTester::Parser::OptionInfo<MedTester::OutputMode> MedTester::Parser::OUTPUT_MODE_OPTION_INFO
+const MEDTester::Parser::OptionInfo<MEDTester::OutputMode> MEDTester::Parser::OUTPUT_MODE_OPTION_INFO
 {
     "output mode",
     "Specifies formating of output.",
     { "--mode", "-m" },
     true,
-    MedTester::OutputMode::ONLY_RESULT
+    MEDTester::OutputMode::ONLY_RESULT
 };
 
-const MedTester::Parser::OptionInfo<bool> MedTester::Parser::SHOW_TIME_OPTION_INFO
+const MEDTester::Parser::OptionInfo<bool> MEDTester::Parser::SHOW_TIME_OPTION_INFO
 {
     "show time",
     "Adds execution time at the end of the output.",
@@ -46,51 +46,51 @@ const MedTester::Parser::OptionInfo<bool> MedTester::Parser::SHOW_TIME_OPTION_IN
     false
 };
 
-const MedTester::Parser::ModeInfo<MedTester::OutputMode> MedTester::Parser::ONLY_RESULT_MODE_INFO
+const MEDTester::Parser::ModeInfo<MEDTester::OutputMode> MEDTester::Parser::ONLY_RESULT_MODE_INFO
 {
     "only result",
     "Prints only the answer 'true' or 'false' ('true' = graph is MED-decomposable).",
     { "onlyresult", "or", "r" },
-    MedTester::OutputMode::ONLY_RESULT
+    MEDTester::OutputMode::ONLY_RESULT
 };
 
-const MedTester::Parser::ModeInfo<MedTester::OutputMode> MedTester::Parser::NOT_DECOMPOSABLE_MODE_INFO
+const MEDTester::Parser::ModeInfo<MEDTester::OutputMode> MEDTester::Parser::NOT_DECOMPOSABLE_MODE_INFO
 {
     "not decomposable",
     "Prints only numbers of those graphs, that are not MED-decomposable.",
     { "notdecomposable", "nd", "d" },
-    MedTester::OutputMode::NOT_DECOMPOSABLE
+    MEDTester::OutputMode::NOT_DECOMPOSABLE
 };
 
-const MedTester::Parser::ModeInfo<MedTester::OutputMode> MedTester::Parser::NOT_DECOMPOSABLE_BRIDGELESS_MODE_INFO
+const MEDTester::Parser::ModeInfo<MEDTester::OutputMode> MEDTester::Parser::NOT_DECOMPOSABLE_BRIDGELESS_MODE_INFO
 {
     "not decomposable bridgeless",
     "Prints only numbers of those graphs, that are not MED-decomposable and bridgeless.",
     { "notdecomposablebridgeless", "ndb", "b" },
-    MedTester::OutputMode::NOT_DECOMPOSABLE_BRIDGELESS
+    MEDTester::OutputMode::NOT_DECOMPOSABLE_BRIDGELESS
 };
 
-const MedTester::Parser::ModeInfo<MedTester::OutputMode> MedTester::Parser::COLORING_MODE_INFO
+const MEDTester::Parser::ModeInfo<MEDTester::OutputMode> MEDTester::Parser::COLORING_MODE_INFO
 {
     "coloring",
     "Prints one of possible MED decomposition or 'false' if there is not such decomposition. Output format is similar to the input format, except 'colors' are added to each edge. 'm' is matching edge, 'c' is cycle edge, 's' is double-star center edge and 'h' is double-star point edge.",
     { "coloring", "c" },
-    MedTester::OutputMode::COLORING
+    MEDTester::OutputMode::COLORING
 };
 
-const std::vector<MedTester::Parser::ModeInfo<MedTester::OutputMode>> MedTester::Parser::AVAILABLE_OUTPUTMODES
+const std::vector<MEDTester::Parser::ModeInfo<MEDTester::OutputMode>> MEDTester::Parser::AVAILABLE_OUTPUTMODES
 {
-    MedTester::Parser::ONLY_RESULT_MODE_INFO,
-    MedTester::Parser::NOT_DECOMPOSABLE_MODE_INFO,
-    MedTester::Parser::NOT_DECOMPOSABLE_BRIDGELESS_MODE_INFO,
-    MedTester::Parser::COLORING_MODE_INFO
+    MEDTester::Parser::ONLY_RESULT_MODE_INFO,
+    MEDTester::Parser::NOT_DECOMPOSABLE_MODE_INFO,
+    MEDTester::Parser::NOT_DECOMPOSABLE_BRIDGELESS_MODE_INFO,
+    MEDTester::Parser::COLORING_MODE_INFO
 
 };
 
-const std::string MedTester::Parser::HELP_SPECIFIER = "help";
+const std::string MEDTester::Parser::HELP_SPECIFIER = "help";
 
 
-MedTester::Parser::Parser(char** begin, char** end)
+MEDTester::Parser::Parser(char** begin, char** end)
 {
     if (begin == nullptr || end == nullptr || begin > end)
         throw std::invalid_argument(INVALID_ARGUMENT_RANGE_MESSAGE);
@@ -103,40 +103,40 @@ MedTester::Parser::Parser(char** begin, char** end)
     mShowTime = SHOW_TIME_OPTION_INFO.defaultValue;
 }
 
-MedTester::Parser::~Parser() {}
+MEDTester::Parser::~Parser() {}
 
 
-char** MedTester::Parser::getBegin() const
+char** MEDTester::Parser::getBegin() const
 {
     return mBegin;
 }
 
-char** MedTester::Parser::getEnd() const
+char** MEDTester::Parser::getEnd() const
 {
     return mEnd;
 }
 
-std::string MedTester::Parser::getInputFilename() const
+std::string MEDTester::Parser::getInputFilename() const
 {
     return mInputFilename;
 }
 
-std::string MedTester::Parser::getOutputFilename() const
+std::string MEDTester::Parser::getOutputFilename() const
 {
     return mOutputFilename;
 }
 
-MedTester::OutputMode MedTester::Parser::getOutputMode() const
+MEDTester::OutputMode MEDTester::Parser::getOutputMode() const
 {
     return mOutputMode;
 }
 
-bool MedTester::Parser::getShowTime() const
+bool MEDTester::Parser::getShowTime() const
 {
     return mShowTime;
 }
 
-void MedTester::Parser::setArgumentRange(char** begin, char** end)
+void MEDTester::Parser::setArgumentRange(char** begin, char** end)
 {
     if (begin == nullptr || end == nullptr || begin > end)
         throw std::invalid_argument(INVALID_ARGUMENT_RANGE_MESSAGE);
@@ -145,28 +145,28 @@ void MedTester::Parser::setArgumentRange(char** begin, char** end)
     mEnd = end;
 }
 
-void MedTester::Parser::setInputFilename(const std::string& filename)
+void MEDTester::Parser::setInputFilename(const std::string& filename)
 {
     mInputFilename = filename;
 }
 
-void MedTester::Parser::setOutputFilename(const std::string& filename)
+void MEDTester::Parser::setOutputFilename(const std::string& filename)
 {
     mOutputFilename = filename;
 }
 
-void MedTester::Parser::setOutputMode(MedTester::OutputMode outputMode)
+void MEDTester::Parser::setOutputMode(MEDTester::OutputMode outputMode)
 {
     mOutputMode = outputMode;
 }
 
-void MedTester::Parser::setShowTime(bool showTime)
+void MEDTester::Parser::setShowTime(bool showTime)
 {
     mShowTime = showTime;
 }
 
 
-void MedTester::Parser::checkSyntax(char** begin, char** end)
+void MEDTester::Parser::checkSyntax(char** begin, char** end)
 {
     if (begin == nullptr || end == nullptr || begin > end)
         throw std::invalid_argument(INVALID_ARGUMENT_RANGE_MESSAGE);
@@ -174,8 +174,8 @@ void MedTester::Parser::checkSyntax(char** begin, char** end)
     if (begin == end) return;
 
     // If found 'help option' at the beginning, output help message and terminate
-    if (strcmp(begin[0], MedTester::Parser::HELP_SPECIFIER.c_str()) == 0) {
-        MedTester::Parser::printHelpMessage();
+    if (strcmp(begin[0], MEDTester::Parser::HELP_SPECIFIER.c_str()) == 0) {
+        MEDTester::Parser::printHelpMessage();
         exit(0);
     }
 
@@ -185,35 +185,35 @@ void MedTester::Parser::checkSyntax(char** begin, char** end)
         std::string optionName;
         bool optionHasArg;
 
-        if (std::find(MedTester::Parser::INPUT_FILENAME_OPTION_INFO.specifiers.begin(), MedTester::Parser::INPUT_FILENAME_OPTION_INFO.specifiers.end(), *it) != MedTester::Parser::INPUT_FILENAME_OPTION_INFO.specifiers.end()) {
+        if (std::find(MEDTester::Parser::INPUT_FILENAME_OPTION_INFO.specifiers.begin(), MEDTester::Parser::INPUT_FILENAME_OPTION_INFO.specifiers.end(), *it) != MEDTester::Parser::INPUT_FILENAME_OPTION_INFO.specifiers.end()) {
             optionName = INPUT_FILENAME_OPTION_INFO.name;
             optionHasArg = INPUT_FILENAME_OPTION_INFO.hasArg;
         }
-        else if (std::find(MedTester::Parser::OUTPUT_FILENAME_OPTION_INFO.specifiers.begin(), MedTester::Parser::OUTPUT_FILENAME_OPTION_INFO.specifiers.end(), *it) != MedTester::Parser::OUTPUT_FILENAME_OPTION_INFO.specifiers.end()) {
+        else if (std::find(MEDTester::Parser::OUTPUT_FILENAME_OPTION_INFO.specifiers.begin(), MEDTester::Parser::OUTPUT_FILENAME_OPTION_INFO.specifiers.end(), *it) != MEDTester::Parser::OUTPUT_FILENAME_OPTION_INFO.specifiers.end()) {
             optionName = OUTPUT_FILENAME_OPTION_INFO.name;
             optionHasArg = OUTPUT_FILENAME_OPTION_INFO.hasArg;
         }
-        else if (std::find(MedTester::Parser::OUTPUT_MODE_OPTION_INFO.specifiers.begin(), MedTester::Parser::OUTPUT_MODE_OPTION_INFO.specifiers.end(), *it) != MedTester::Parser::OUTPUT_MODE_OPTION_INFO.specifiers.end()) {
+        else if (std::find(MEDTester::Parser::OUTPUT_MODE_OPTION_INFO.specifiers.begin(), MEDTester::Parser::OUTPUT_MODE_OPTION_INFO.specifiers.end(), *it) != MEDTester::Parser::OUTPUT_MODE_OPTION_INFO.specifiers.end()) {
             optionName = OUTPUT_MODE_OPTION_INFO.name;
             optionHasArg = OUTPUT_MODE_OPTION_INFO.hasArg;
         }
-        else if (std::find(MedTester::Parser::SHOW_TIME_OPTION_INFO.specifiers.begin(), MedTester::Parser::SHOW_TIME_OPTION_INFO.specifiers.end(), *it) != MedTester::Parser::SHOW_TIME_OPTION_INFO.specifiers.end()) {
+        else if (std::find(MEDTester::Parser::SHOW_TIME_OPTION_INFO.specifiers.begin(), MEDTester::Parser::SHOW_TIME_OPTION_INFO.specifiers.end(), *it) != MEDTester::Parser::SHOW_TIME_OPTION_INFO.specifiers.end()) {
             optionName = SHOW_TIME_OPTION_INFO.name;
             optionHasArg = SHOW_TIME_OPTION_INFO.hasArg;
         }
-        else throw MedTester::Parser::InvalidSyntaxException(MedTester::Parser::UNKNOWN_OPTION_MESSAGE(*it));
+        else throw MEDTester::Parser::InvalidSyntaxException(MEDTester::Parser::UNKNOWN_OPTION_MESSAGE(*it));
 
         if (mentionedOptions.count(optionName))
-            throw MedTester::Parser::InvalidSyntaxException(MedTester::Parser::DOUBLE_OPTION_MESSAGE(optionName));
+            throw MEDTester::Parser::InvalidSyntaxException(MEDTester::Parser::DOUBLE_OPTION_MESSAGE(optionName));
 
         if (optionHasArg && ++it == end)
-            throw MedTester::Parser::InvalidSyntaxException(MedTester::Parser::EXPECTED_OPTION_ARGUMENT_MESSAGE(optionName));
+            throw MEDTester::Parser::InvalidSyntaxException(MEDTester::Parser::EXPECTED_OPTION_ARGUMENT_MESSAGE(optionName));
 
         mentionedOptions.insert(optionName);
     }
 }
 
-bool MedTester::Parser::optionExists(char** begin, char** end, const std::string& option)
+bool MEDTester::Parser::optionExists(char** begin, char** end, const std::string& option)
 {
     if (begin == nullptr || end == nullptr || begin > end)
         throw std::invalid_argument(INVALID_ARGUMENT_RANGE_MESSAGE);
@@ -221,7 +221,7 @@ bool MedTester::Parser::optionExists(char** begin, char** end, const std::string
     return std::find(begin, end, option) != end;
 }
 
-std::string MedTester::Parser::getOptionArgument(char** begin, char** end, const std::string& option)
+std::string MEDTester::Parser::getOptionArgument(char** begin, char** end, const std::string& option)
 {
     if (begin == nullptr || end == nullptr || begin > end)
         throw std::invalid_argument(INVALID_ARGUMENT_RANGE_MESSAGE);
@@ -229,32 +229,32 @@ std::string MedTester::Parser::getOptionArgument(char** begin, char** end, const
     char** arg = std::find(begin, end, option);
 
     if (arg == end || ++arg == end)
-        throw MedTester::Parser::InvalidSyntaxException(MedTester::Parser::EXPECTED_OPTION_ARGUMENT_MESSAGE(option));
+        throw MEDTester::Parser::InvalidSyntaxException(MEDTester::Parser::EXPECTED_OPTION_ARGUMENT_MESSAGE(option));
 
     return std::string(*arg);
 }
 
-void MedTester::Parser::checkSyntax() const
+void MEDTester::Parser::checkSyntax() const
 {
-    MedTester::Parser::checkSyntax(mBegin, mEnd);
+    MEDTester::Parser::checkSyntax(mBegin, mEnd);
 }
 
-bool MedTester::Parser::optionExists(const std::string& option) const
+bool MEDTester::Parser::optionExists(const std::string& option) const
 {
-    return MedTester::Parser::optionExists(mBegin, mEnd, option);
+    return MEDTester::Parser::optionExists(mBegin, mEnd, option);
 }
 
-std::string MedTester::Parser::getOptionArgument(const std::string& option) const
+std::string MEDTester::Parser::getOptionArgument(const std::string& option) const
 {
-    return MedTester::Parser::getOptionArgument(mBegin, mEnd, option);
+    return MEDTester::Parser::getOptionArgument(mBegin, mEnd, option);
 }
 
 
-bool MedTester::Parser::parseInputFilename()
+bool MEDTester::Parser::parseInputFilename()
 {
     std::string specifier;
-    for (std::string s : MedTester::Parser::INPUT_FILENAME_OPTION_INFO.specifiers) {
-        if (MedTester::Parser::optionExists(s)) {
+    for (std::string s : MEDTester::Parser::INPUT_FILENAME_OPTION_INFO.specifiers) {
+        if (MEDTester::Parser::optionExists(s)) {
             specifier = s;
             break;
         }
@@ -263,16 +263,16 @@ bool MedTester::Parser::parseInputFilename()
     if (specifier.empty())
         return false;
     
-    std::string filename = MedTester::Parser::getOptionArgument(specifier);
+    std::string filename = MEDTester::Parser::getOptionArgument(specifier);
     mInputFilename = filename;
     return true;
 }
 
-bool MedTester::Parser::parseOutputFilename()
+bool MEDTester::Parser::parseOutputFilename()
 {
     std::string specifier;
-    for (std::string s : MedTester::Parser::OUTPUT_FILENAME_OPTION_INFO.specifiers) {
-        if (MedTester::Parser::optionExists(s)) {
+    for (std::string s : MEDTester::Parser::OUTPUT_FILENAME_OPTION_INFO.specifiers) {
+        if (MEDTester::Parser::optionExists(s)) {
             specifier = s;
             break;
         }
@@ -281,16 +281,16 @@ bool MedTester::Parser::parseOutputFilename()
     if (specifier.empty())
         return false;
     
-    std::string filename = MedTester::Parser::getOptionArgument(specifier);
+    std::string filename = MEDTester::Parser::getOptionArgument(specifier);
     mOutputFilename = filename;
     return true;
 }
 
-bool MedTester::Parser::parseOutputMode()
+bool MEDTester::Parser::parseOutputMode()
 {
     std::string specifier;
-    for (std::string s : MedTester::Parser::OUTPUT_MODE_OPTION_INFO.specifiers) {
-        if (MedTester::Parser::optionExists(s)) {
+    for (std::string s : MEDTester::Parser::OUTPUT_MODE_OPTION_INFO.specifiers) {
+        if (MEDTester::Parser::optionExists(s)) {
             specifier = s;
             break;
         }
@@ -299,21 +299,21 @@ bool MedTester::Parser::parseOutputMode()
     if (specifier.empty())
         return false;
 
-    std::string modeSpecifier = MedTester::Parser::getOptionArgument(specifier);
-    for (MedTester::Parser::ModeInfo<MedTester::OutputMode> mode : MedTester::Parser::AVAILABLE_OUTPUTMODES) {
+    std::string modeSpecifier = MEDTester::Parser::getOptionArgument(specifier);
+    for (MEDTester::Parser::ModeInfo<MEDTester::OutputMode> mode : MEDTester::Parser::AVAILABLE_OUTPUTMODES) {
         if (std::find(mode.specifiers.begin(), mode.specifiers.end(), modeSpecifier) != mode.specifiers.end()) {
             mOutputMode = mode.value;
             return true;
         }
     }
 
-    throw MedTester::Parser::InvalidSyntaxException(MedTester::Parser::UNKNOWN_OUTPUT_MODE_MESSAGE(modeSpecifier));
+    throw MEDTester::Parser::InvalidSyntaxException(MEDTester::Parser::UNKNOWN_OUTPUT_MODE_MESSAGE(modeSpecifier));
 }
 
-bool MedTester::Parser::parseShowTime()
+bool MEDTester::Parser::parseShowTime()
 {
-    for (std::string s : MedTester::Parser::SHOW_TIME_OPTION_INFO.specifiers) {
-        if (MedTester::Parser::optionExists(s)) {
+    for (std::string s : MEDTester::Parser::SHOW_TIME_OPTION_INFO.specifiers) {
+        if (MEDTester::Parser::optionExists(s)) {
             mShowTime = true;
             return true;
         }
@@ -322,16 +322,16 @@ bool MedTester::Parser::parseShowTime()
     return false;
 }
 
-void MedTester::Parser::parseAll()
+void MEDTester::Parser::parseAll()
 {
-    MedTester::Parser::parseInputFilename();
-    MedTester::Parser::parseOutputFilename();
-    MedTester::Parser::parseOutputMode();
-    MedTester::Parser::parseShowTime();
+    MEDTester::Parser::parseInputFilename();
+    MEDTester::Parser::parseOutputFilename();
+    MEDTester::Parser::parseOutputMode();
+    MEDTester::Parser::parseShowTime();
 }
 
 
-void MedTester::Parser::printHelpMessage()
+void MEDTester::Parser::printHelpMessage()
 {
     size_t TAB = 3;
     size_t WIDTH = 100;
@@ -339,70 +339,70 @@ void MedTester::Parser::printHelpMessage()
     std::cout << "MED is a program for testing cubic graphs - whether they are MED-decomposable or not.\n\n";
 
     std::cout << "USAGE\n";
-    std::cout << MedTester::Parser::formatText(
+    std::cout << MEDTester::Parser::formatText(
         "med" +
-        MedTester::Parser::joinToString(MedTester::Parser::INPUT_FILENAME_OPTION_INFO.specifiers, " [", " <path>]", " | ") +
-        MedTester::Parser::joinToString(MedTester::Parser::OUTPUT_FILENAME_OPTION_INFO.specifiers, " [", " <path>]", " | ") +
-        MedTester::Parser::joinToString(MedTester::Parser::OUTPUT_MODE_OPTION_INFO.specifiers, " [", " <mode_name>]", " | ") +
-        MedTester::Parser::joinToString(MedTester::Parser::SHOW_TIME_OPTION_INFO.specifiers, " [", "]", " | "),
+        MEDTester::Parser::joinToString(MEDTester::Parser::INPUT_FILENAME_OPTION_INFO.specifiers, " [", " <path>]", " | ") +
+        MEDTester::Parser::joinToString(MEDTester::Parser::OUTPUT_FILENAME_OPTION_INFO.specifiers, " [", " <path>]", " | ") +
+        MEDTester::Parser::joinToString(MEDTester::Parser::OUTPUT_MODE_OPTION_INFO.specifiers, " [", " <mode_name>]", " | ") +
+        MEDTester::Parser::joinToString(MEDTester::Parser::SHOW_TIME_OPTION_INFO.specifiers, " [", "]", " | "),
         1*TAB,
         WIDTH
     ) << "\n";
 
     std::cout << "OPTIONS\n";
-    std::cout << MedTester::Parser::formatText(
-        MedTester::Parser::joinToString(MedTester::Parser::INPUT_FILENAME_OPTION_INFO.specifiers, "", "", ", "),
+    std::cout << MEDTester::Parser::formatText(
+        MEDTester::Parser::joinToString(MEDTester::Parser::INPUT_FILENAME_OPTION_INFO.specifiers, "", "", ", "),
         1*TAB,
         WIDTH
     );
-    std::cout << MedTester::Parser::formatText(
-        MedTester::Parser::INPUT_FILENAME_OPTION_INFO.description,
+    std::cout << MEDTester::Parser::formatText(
+        MEDTester::Parser::INPUT_FILENAME_OPTION_INFO.description,
         2*TAB,
         WIDTH
     ) << "\n";
 
-    std::cout << MedTester::Parser::formatText(
-        MedTester::Parser::joinToString(MedTester::Parser::OUTPUT_FILENAME_OPTION_INFO.specifiers, "", "", ", "),
+    std::cout << MEDTester::Parser::formatText(
+        MEDTester::Parser::joinToString(MEDTester::Parser::OUTPUT_FILENAME_OPTION_INFO.specifiers, "", "", ", "),
         1*TAB,
         WIDTH
     );
-    std::cout << MedTester::Parser::formatText(
-        MedTester::Parser::OUTPUT_FILENAME_OPTION_INFO.description,
+    std::cout << MEDTester::Parser::formatText(
+        MEDTester::Parser::OUTPUT_FILENAME_OPTION_INFO.description,
         2*TAB,
         WIDTH
     ) << "\n";
 
-    std::cout << MedTester::Parser::formatText(
-        MedTester::Parser::joinToString(MedTester::Parser::OUTPUT_MODE_OPTION_INFO.specifiers, "", "", ", "),
+    std::cout << MEDTester::Parser::formatText(
+        MEDTester::Parser::joinToString(MEDTester::Parser::OUTPUT_MODE_OPTION_INFO.specifiers, "", "", ", "),
         1*TAB,
         WIDTH
     );
-    std::cout << MedTester::Parser::formatText(
-        MedTester::Parser::OUTPUT_MODE_OPTION_INFO.description +
+    std::cout << MEDTester::Parser::formatText(
+        MEDTester::Parser::OUTPUT_MODE_OPTION_INFO.description +
         " Use with one of the following mode names (default is 'only result' mode):",
         2*TAB,
         WIDTH
     ) << "\n";
 
-    for (MedTester::Parser::ModeInfo mode : MedTester::Parser::AVAILABLE_OUTPUTMODES) {
-        std::cout << MedTester::Parser::formatText(MedTester::Parser::joinToString(mode.specifiers, "", "", " / "), 2*TAB, WIDTH);
-        std::cout << MedTester::Parser::formatText(mode.description, 3*TAB, WIDTH) << "\n";
+    for (MEDTester::Parser::ModeInfo mode : MEDTester::Parser::AVAILABLE_OUTPUTMODES) {
+        std::cout << MEDTester::Parser::formatText(MEDTester::Parser::joinToString(mode.specifiers, "", "", " / "), 2*TAB, WIDTH);
+        std::cout << MEDTester::Parser::formatText(mode.description, 3*TAB, WIDTH) << "\n";
     }
     std::cout << "\n";
 
-    std::cout << MedTester::Parser::formatText(
-        MedTester::Parser::joinToString(MedTester::Parser::SHOW_TIME_OPTION_INFO.specifiers, "", "", ", "),
+    std::cout << MEDTester::Parser::formatText(
+        MEDTester::Parser::joinToString(MEDTester::Parser::SHOW_TIME_OPTION_INFO.specifiers, "", "", ", "),
         1*TAB,
         WIDTH
     );
-    std::cout << MedTester::Parser::formatText(
-        MedTester::Parser::SHOW_TIME_OPTION_INFO.description ,
+    std::cout << MEDTester::Parser::formatText(
+        MEDTester::Parser::SHOW_TIME_OPTION_INFO.description ,
         2*TAB,
         WIDTH
     ) << "\n";
 
     std::cout << "INPUT FORMAT\n";
-    std::cout << MedTester::Parser::formatText(std::string() +
+    std::cout << MEDTester::Parser::formatText(std::string() +
         "The input should consist of only integers separated by any whitespace. The first integer is a total number of tested graphs. " +
         "Then follows that number of graph descriptions. A graph description starts with the number of graph (can be actually any number), " +
         "followed by the number of vertices. Vertices are by default numbered from 0 to n-1, where n is the number of vertices. Next n " +
@@ -417,29 +417,29 @@ void MedTester::Parser::printHelpMessage()
 }
 
 
-const std::string MedTester::Parser::INVALID_ARGUMENT_RANGE_MESSAGE = "Invalid pointers to an array";
+const std::string MEDTester::Parser::INVALID_ARGUMENT_RANGE_MESSAGE = "Invalid pointers to an array";
 
-inline std::string MedTester::Parser::UNKNOWN_OPTION_MESSAGE(const std::string& option)
+inline std::string MEDTester::Parser::UNKNOWN_OPTION_MESSAGE(const std::string& option)
 {
-    return "Uknown option '" + option + "'. Use '" + MedTester::Parser::HELP_SPECIFIER + "' for command description.";
+    return "Uknown option '" + option + "'. Use '" + MEDTester::Parser::HELP_SPECIFIER + "' for command description.";
 }
 
-inline std::string MedTester::Parser::DOUBLE_OPTION_MESSAGE(const std::string& option)
+inline std::string MEDTester::Parser::DOUBLE_OPTION_MESSAGE(const std::string& option)
 {
     return "Found two specifiers of the same option '" + option + "'. Use only one of them.";
 }
 
-inline std::string MedTester::Parser::EXPECTED_OPTION_ARGUMENT_MESSAGE(const std::string& option)
+inline std::string MEDTester::Parser::EXPECTED_OPTION_ARGUMENT_MESSAGE(const std::string& option)
 {
     return "Expected argument after option '" + option + "', but found none.";
 }
 
-inline std::string MedTester::Parser::UNKNOWN_OUTPUT_MODE_MESSAGE(const std::string& mode)
+inline std::string MEDTester::Parser::UNKNOWN_OUTPUT_MODE_MESSAGE(const std::string& mode)
 {
-    return "Uknown output mode '" + mode + "'. Use '" + MedTester::Parser::HELP_SPECIFIER + "' for command description.";
+    return "Uknown output mode '" + mode + "'. Use '" + MEDTester::Parser::HELP_SPECIFIER + "' for command description.";
 }
 
-std::string MedTester::Parser::formatText(const std::string& text, size_t indent, size_t width)
+std::string MEDTester::Parser::formatText(const std::string& text, size_t indent, size_t width)
 {
     size_t curPos = 0;
     size_t nextPos = 0;
@@ -457,7 +457,7 @@ std::string MedTester::Parser::formatText(const std::string& text, size_t indent
     return toReturn;
 }
 
-std::string MedTester::Parser::joinToString(std::vector<std::string> list, const std::string& prefix, const std::string& suffix, const std::string& separator)
+std::string MEDTester::Parser::joinToString(std::vector<std::string> list, const std::string& prefix, const std::string& suffix, const std::string& separator)
 {
     std::string toReturn = prefix;
     if (!list.empty()) {

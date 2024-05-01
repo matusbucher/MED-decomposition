@@ -1,7 +1,8 @@
-#ifndef MEDTESTER_UTILS_OUTPUT_MODE_H_
-#define MEDTESTER_UTILS_OUTPUT_MODE_H_
+#ifndef MEDTESTER_OUTPUT_MODE_H_
+#define MEDTESTER_OUTPUT_MODE_H_
 
-namespace MedTester
+
+namespace MEDTester
 {
 
 enum class OutputMode
@@ -12,6 +13,6 @@ enum class OutputMode
     COLORING
 };
     
-} // namespace MedTester
+} // namespace MEDTester
 
-#endif // MEDTESTER_UTILS_OUTPUT_MODE_H_
+#endif // MEDTESTER_OUTPUT_MODE_H_
