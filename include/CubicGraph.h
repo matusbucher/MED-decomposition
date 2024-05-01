@@ -15,12 +15,12 @@ class CubicGraph
 {
 public:
     // Constructors and deconstructor:
-    CubicGraph(const MEDTester::AdjacencyList& adjList, bool checkGraph);
+    CubicGraph(const MEDTester::Matrix& adjList, bool checkGraph);
     ~CubicGraph();
 
     // Getters:
     int getVerticesCount();
-    MEDTester::AdjacencyList getAdjList();
+    MEDTester::Matrix getAdjList();
     MEDTester::Decomposition getDecomposition();
 
     // Functions for reading in and printing out the graph:
@@ -36,8 +36,8 @@ public:
 
 private:
     int mVerticesCount;
-    MEDTester::AdjacencyList mAdjList;
-    std::vector<std::vector<int>> mAdjListIndices;
+    MEDTester::Matrix mAdjList;
+    MEDTester::Matrix mAdjListIndices;
     MEDTester::Decomposition mDecomposition;
     bool mColoringDone;
     int mBridgesCount;

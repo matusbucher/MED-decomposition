@@ -67,7 +67,7 @@ private:
     static inline std::string CANNOT_OPEN_FILE_MESSAGE(const std::string& filename);
 
     static int getInt(std::istream& in, const std::string& what);
-    static MEDTester::AdjacencyList getAdjList(std::istream& in, int graphNum, bool errorCheck);
+    static MEDTester::Matrix getAdjList(std::istream& in, int graphNum, bool errorCheck);
 };
 
 } // namespace MEDTester

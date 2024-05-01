@@ -143,7 +143,7 @@ void MEDTester::GraphAnalyser::coloringMode(std::istream& in, std::ostream& out)
     int graphCount = MEDTester::GraphAnalyser::getInt(in, "number of graphs");
     for (int i = 1; i <= graphCount; ++i) {
         int graphNum = MEDTester::GraphAnalyser::getInt(in, "graph number, " + std::to_string(i) + ". graph");
-        MEDTester::AdjacencyList adjList = MEDTester::GraphAnalyser::getAdjList(in, graphNum, true);
+        MEDTester::Matrix adjList = MEDTester::GraphAnalyser::getAdjList(in, graphNum, true);
         MEDTester::CubicGraph graph(adjList, false);
         out << "graph " << graphNum << ":\n";
         if (graph.isDecomposable()) {
@@ -186,11 +186,11 @@ int MEDTester::GraphAnalyser::getInt(std::istream& in, const std::string& what)
     return x;
 }
 
-MEDTester::AdjacencyList MEDTester::GraphAnalyser::getAdjList(std::istream& in, int graphNum, bool errorCheck = true)
+MEDTester::Matrix MEDTester::GraphAnalyser::getAdjList(std::istream& in, int graphNum, bool errorCheck = true)
 {
     int numVertices = MEDTester::GraphAnalyser::getInt(in, "number of vertices in graph " + std::to_string(graphNum));
 
-    MEDTester::AdjacencyList adjList(numVertices, std::vector<int>(3, -1));
+    MEDTester::Matrix adjList(numVertices, MEDTester::MatrixLine(3, -1));
 
     for (int u = 0; u < numVertices; ++u) {
         std::unordered_set<int> adjacentVertices;

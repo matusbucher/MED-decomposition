@@ -17,11 +17,11 @@ const MEDTester::EdgeType VERTEX_COLORINGS[3][3] = {
 };
 
 
-MEDTester::CubicGraph::CubicGraph(const MEDTester::AdjacencyList& adjList, bool checkGraph = false)
+MEDTester::CubicGraph::CubicGraph(const MEDTester::Matrix& adjList, bool checkGraph = false)
 {
     mVerticesCount = adjList.size();
-    mAdjList = MEDTester::AdjacencyList(mVerticesCount, std::vector<int>(3));
-    mAdjListIndices = std::vector<std::vector<int>>(mVerticesCount, std::vector<int>(mVerticesCount, -1));
+    mAdjList = MEDTester::Matrix(mVerticesCount, MEDTester::MatrixLine(3));
+    mAdjListIndices = MEDTester::Matrix(mVerticesCount, MEDTester::MatrixLine(mVerticesCount, -1));
 
     for (int u = 0; u < mVerticesCount; ++u) {
         for (int i = 0; i < 3; ++i) {
@@ -45,7 +45,7 @@ int MEDTester::CubicGraph::getVerticesCount()
     return mVerticesCount;
 }
 
-MEDTester::AdjacencyList MEDTester::CubicGraph::getAdjList()
+MEDTester::Matrix MEDTester::CubicGraph::getAdjList()
 {
     return mAdjList;
 }

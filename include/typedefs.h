@@ -3,6 +3,7 @@
 
 #include <vector>
 
+
 namespace MEDTester
 {
 
@@ -15,7 +16,9 @@ enum class EdgeType
     STAR_CENTER
 };
 
-typedef std::vector<std::vector<int>> AdjacencyList;
+typedef std::vector<int> MatrixLine;
+
+typedef std::vector<MatrixLine> Matrix;
 
 typedef std::vector<std::vector<EdgeType>> Decomposition;
 
