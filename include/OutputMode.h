@@ -1,11 +1,17 @@
-#ifndef OUTPUT_MODES_H
-#define OUTPUT_MODES_H
+#ifndef MEDTESTER_UTILS_OUTPUT_MODE_H_
+#define MEDTESTER_UTILS_OUTPUT_MODE_H_
 
-enum class OutputMode {
+namespace MedTester
+{
+
+enum class OutputMode
+{
     ONLY_RESULT,
-    NOT_COLORABLE,
-    NOT_COLORABLE_BRIDGELESS,
+    NOT_DECOMPOSABLE,
+    NOT_DECOMPOSABLE_BRIDGELESS,
     COLORING
 };
+    
+} // namespace MedTester
 
-#endif
+#endif // MEDTESTER_UTILS_OUTPUT_MODE_H_
