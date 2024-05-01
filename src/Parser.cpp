@@ -344,8 +344,8 @@ void MedTester::Parser::printHelpMessage()
         "med" +
         MedTester::Parser::joinToString(MedTester::Parser::INPUT_FILENAME_OPTION_INFO.specifiers, " [", " <path>]", " | ") +
         MedTester::Parser::joinToString(MedTester::Parser::OUTPUT_FILENAME_OPTION_INFO.specifiers, " [", " <path>]", " | ") +
-        MedTester::Parser::joinToString(MedTester::Parser::INPUT_FILENAME_OPTION_INFO.specifiers, " [", " <mode_name>]", " | ") +
-        MedTester::Parser::joinToString(MedTester::Parser::INPUT_FILENAME_OPTION_INFO.specifiers, " [", "]", " | "),
+        MedTester::Parser::joinToString(MedTester::Parser::OUTPUT_MODE_OPTION_INFO.specifiers, " [", " <mode_name>]", " | ") +
+        MedTester::Parser::joinToString(MedTester::Parser::SHOW_TIME_OPTION_INFO.specifiers, " [", "]", " | "),
         1*TAB,
         WIDTH
     ) << "\n";
