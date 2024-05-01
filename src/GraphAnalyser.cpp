@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 #include <unordered_set>
+#include <unordered_map>
 #include <iostream>
 #include <fstream>
 #include <filesystem>
@@ -130,13 +131,29 @@ void MedTester::GraphAnalyser::notDecomposableBridgelessMode(std::istream& in, s
 
 void MedTester::GraphAnalyser::coloringMode(std::istream& in, std::ostream& out)
 {
+    const std::unordered_map<CubicGraph::EdgeColor, std::string> edgeColorChar = {
+        {CubicGraph::EdgeColor::NONE, "-"},
+        {CubicGraph::EdgeColor::MATCHING, "m"},
+        {CubicGraph::EdgeColor::CYCLE, "c"},
+        {CubicGraph::EdgeColor::STAR_POINT, "h"},
+        {CubicGraph::EdgeColor::STAR_CENTER, "s"}
+    };
+
     int graphCount = MedTester::GraphAnalyser::getInt(in, "number of graphs");
     for (int i = 1; i <= graphCount; ++i) {
         int graphNum = MedTester::GraphAnalyser::getInt(in, "graph number, " + std::to_string(i) + ". graph");
-        CubicGraph graph(MedTester::GraphAnalyser::getAdjList(in, graphNum, true), false);
-        out << graphNum << ":\n";
+        std::vector<std::vector<int>> adjList = MedTester::GraphAnalyser::getAdjList(in, graphNum, true);
+        CubicGraph graph(adjList, false);
+        out << "graph " << graphNum << ":\n";
         if (graph.isMedDecomposable()) {
-            // TODO
+            std::vector<std::vector<CubicGraph::EdgeColor>> coloring = graph.getMedColoring();
+            for (int i = 0; i < graph.getVerticesCount(); ++i) {
+                out << adjList[i][0] << edgeColorChar.at(coloring[i][0]);
+                for (int j = 1; j < 3; ++j) {
+                    out << " " << adjList[i][j] << edgeColorChar.at(coloring[i][j]);
+                }
+                out << "\n";
+            }
         } else {
             out << "false\n";
         }
