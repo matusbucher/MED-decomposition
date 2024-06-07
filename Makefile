@@ -9,8 +9,7 @@ OBJ := $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 CC			:= g++
 CFLAGS		:= -Wall -std=c++17
 CPPFLAGS	:= -Iinclude -MMD -MP
-LDFLAGS		:= #-Llib
-LDLIBS		:= #-lminisat
+LDLIBS		:= -lcryptominisat5
 
 .PHONY: all clean
 
@@ -18,8 +17,8 @@ all: $(EXE)
 	@echo BUILD SUCCEEDED
 
 $(EXE): $(OBJ) | $(BIN_DIR)
-	@echo LINKING..... $(CC) $(LDFLAGS) "$^" $(LDLIBS) -o "$@"
-	@$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
+	@echo LINKING..... $(CC) "$^" $(LDLIBS) -o "$@"
+	@$(CC) $^ $(LDLIBS) -o $@
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
 	@echo COMPILING... $(CC) $(CPPFLAGS) $(CFLAGS) -c "$<" -o "$@"

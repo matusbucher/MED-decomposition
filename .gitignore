@@ -92,3 +92,4 @@ $RECYCLE.BIN/
 
 ##### Minisat Solver files
 minisat*/
+*.log
