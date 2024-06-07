@@ -90,6 +90,5 @@ $RECYCLE.BIN/
 *.msp
 
 
-##### Minisat Solver files
-minisat*/
+# Log files
 *.log
