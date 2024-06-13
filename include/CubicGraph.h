@@ -45,9 +45,9 @@ private:
 
     void dfsHelper(int vertex, std::vector<int>& vec, std::unordered_set<int>& visited) const;
 
-    void colorEdge(int vertex, int index, MEDTester::EdgeType color);
+    void colorEdge(int vertex, unsigned int index, MEDTester::EdgeType color);
     void generateDecomposition(int vertex);
-    void decompositionHelper(int index, std::vector<int>& vertices);
+    void decompositionHelper(unsigned int index, std::vector<int>& vertices);
 
     bool checkCycles() const;
     bool checkDoubleStars() const;
