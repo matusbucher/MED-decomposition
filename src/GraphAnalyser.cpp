@@ -1,10 +1,14 @@
 #include "GraphAnalyser.h"
 
+#ifdef SAT
+    #include "SatSolver.h"
+#else
+    #include "CubicGraph.h"
+#endif
+
 #include "typedefs.h"
 #include "OutputMode.h"
 #include "Parser.h"
-
-#include "CubicGraph.h"
 
 #include <string>
 #include <vector>
@@ -46,11 +50,11 @@ void MEDTester::GraphAnalyser::analyze() const
         in = &std::cin;
     } else {
         if (!std::filesystem::exists(mInputFilename)) {
-            throw MEDTester::GraphAnalyser::FileErrorException(MEDTester::GraphAnalyser::INPUT_FILE_DOES_NOT_EXIST_MESSAGE(mInputFilename));
+            throw FileErrorException(INPUT_FILE_DOES_NOT_EXIST_MESSAGE(mInputFilename));
         }
         inputFile.open(mInputFilename, std::ifstream::in);
         if (!inputFile.good()) {
-            throw MEDTester::GraphAnalyser::FileErrorException(MEDTester::GraphAnalyser::CANNOT_OPEN_FILE_MESSAGE(mInputFilename));
+            throw FileErrorException(CANNOT_OPEN_FILE_MESSAGE(mInputFilename));
         }
         in = &inputFile;
     }
@@ -62,7 +66,7 @@ void MEDTester::GraphAnalyser::analyze() const
     } else {
         outputFile.open(mOutputFilename, std::ofstream::out);
         if (!outputFile.is_open())
-            throw MEDTester::GraphAnalyser::FileErrorException(MEDTester::GraphAnalyser::CANNOT_OPEN_FILE_MESSAGE(mOutputFilename));
+            throw FileErrorException(CANNOT_OPEN_FILE_MESSAGE(mOutputFilename));
         out = &outputFile;
     }
 
@@ -71,19 +75,19 @@ void MEDTester::GraphAnalyser::analyze() const
     switch (mOutputMode)
     {
     case MEDTester::OutputMode::ONLY_RESULT: 
-        MEDTester::GraphAnalyser::onlyResultMode(*in, *out);
+        onlyResultMode(*in, *out);
         break;
 
     case MEDTester::OutputMode::NOT_DECOMPOSABLE: 
-        MEDTester::GraphAnalyser::notDecomposableMode(*in, *out);
+        notDecomposableMode(*in, *out);
         break;
 
     case MEDTester::OutputMode::NOT_DECOMPOSABLE_BRIDGELESS: 
-        MEDTester::GraphAnalyser::notDecomposableBridgelessMode(*in, *out);
+        notDecomposableBridgelessMode(*in, *out);
         break;
 
     case MEDTester::OutputMode::COLORING: 
-        MEDTester::GraphAnalyser::coloringMode(*in, *out);
+        coloringMode(*in, *out);
         break;
     }
 
@@ -100,33 +104,53 @@ void MEDTester::GraphAnalyser::analyze() const
 
 void MEDTester::GraphAnalyser::onlyResultMode(std::istream& in, std::ostream& out)
 {
-    int graphCount = MEDTester::GraphAnalyser::getInt(in, "number of graphs");
+    int graphCount = getInt(in, "number of graphs");
     for (int i = 1; i <= graphCount; ++i) {
-        int graphNum = MEDTester::GraphAnalyser::getInt(in, "graph number, " + std::to_string(i) + ". graph");
-        MEDTester::CubicGraph graph(MEDTester::GraphAnalyser::getAdjList(in, graphNum, true), false);
-        out << graphNum << ": " << (graph.isDecomposable() ? "true" : "false") << "\n";
+        int graphNum = getInt(in, "graph number, " + std::to_string(i) + ". graph");
+        MEDTester::CubicGraph graph(getAdjList(in, graphNum, true));
+
+        #ifdef SAT
+            MEDTester::SatSolver solver(graph);
+            out << graphNum << ": " << (solver.isDecomposable() ? "true" : "false") << "\n";
+        #else
+            out << graphNum << ": " << (graph.isDecomposable() ? "true" : "false") << " (graph)\n";
+        #endif
     }
 }
 
 void MEDTester::GraphAnalyser::notDecomposableMode(std::istream& in, std::ostream& out)
 {
-    int graphCount = MEDTester::GraphAnalyser::getInt(in, "number of graphs");
+    int graphCount = getInt(in, "number of graphs");
     out << "Not decomposable graphs:\n";
     for (int i = 1; i <= graphCount; ++i) {
-        int graphNum = MEDTester::GraphAnalyser::getInt(in, "graph number, " + std::to_string(i) + ". graph");
-        MEDTester::CubicGraph graph(MEDTester::GraphAnalyser::getAdjList(in, graphNum, true), false);
-        if (!graph.isDecomposable()) out << graphNum << "\n";
+        int graphNum = getInt(in, "graph number, " + std::to_string(i) + ". graph");
+        MEDTester::CubicGraph graph(getAdjList(in, graphNum, true));
+
+        #ifdef SAT
+            MEDTester::SatSolver solver(graph);
+            if (!solver.isDecomposable()) out << graphNum << "\n";
+        #else
+            if (!graph.isDecomposable()) out << graphNum << "\n";
+        #endif
     }
 }
 
 void MEDTester::GraphAnalyser::notDecomposableBridgelessMode(std::istream& in, std::ostream& out)
 {
-    int graphCount = MEDTester::GraphAnalyser::getInt(in, "number of graphs");
+    int graphCount = getInt(in, "number of graphs");
     out << "Not decomposable and bridgeless graphs:\n";
     for (int i = 1; i <= graphCount; ++i) {
-        int graphNum = MEDTester::GraphAnalyser::getInt(in, "graph number, " + std::to_string(i) + ". graph");
-        MEDTester::CubicGraph graph(MEDTester::GraphAnalyser::getAdjList(in, graphNum, true), false);
-        if (graph.isBridgeless() && !graph.isDecomposable()) out << graphNum << "\n";
+        int graphNum = getInt(in, "graph number, " + std::to_string(i) + ". graph");
+        MEDTester::CubicGraph graph(getAdjList(in, graphNum, true));
+
+        if (graph.isBridgeless()) {
+            #ifdef SAT
+                MEDTester::SatSolver solver(graph);
+                if (!solver.isDecomposable()) out << graphNum << "\n";
+            #else
+                if (!graph.isDecomposable()) out << graphNum << "\n";
+            #endif
+        }
     }
 }
 
@@ -136,28 +160,46 @@ void MEDTester::GraphAnalyser::coloringMode(std::istream& in, std::ostream& out)
         {MEDTester::EdgeType::NONE, "-"},
         {MEDTester::EdgeType::MATCHING, "m"},
         {MEDTester::EdgeType::CYCLE, "c"},
-        {MEDTester::EdgeType::STAR_POINT, "h"},
+        {MEDTester::EdgeType::STAR_LEAF, "h"},
         {MEDTester::EdgeType::STAR_CENTER, "s"}
     };
 
-    int graphCount = MEDTester::GraphAnalyser::getInt(in, "number of graphs");
+    int graphCount = getInt(in, "number of graphs");
     for (int i = 1; i <= graphCount; ++i) {
-        int graphNum = MEDTester::GraphAnalyser::getInt(in, "graph number, " + std::to_string(i) + ". graph");
-        MEDTester::Matrix adjList = MEDTester::GraphAnalyser::getAdjList(in, graphNum, true);
-        MEDTester::CubicGraph graph(adjList, false);
-        out << "graph " << graphNum << ":\n";
-        if (graph.isDecomposable()) {
-            MEDTester::Decomposition coloring = graph.getDecomposition();
-            for (int i = 0; i < graph.getVerticesCount(); ++i) {
-                out << adjList[i][0] << edgeColorChar.at(coloring[i][0]);
-                for (int j = 1; j < 3; ++j) {
-                    out << " " << adjList[i][j] << edgeColorChar.at(coloring[i][j]);
+        int graphNum = getInt(in, "graph number, " + std::to_string(i) + ". graph");
+        MEDTester::Matrix adjList = getAdjList(in, graphNum, true);
+        MEDTester::CubicGraph graph(adjList);
+
+        #ifdef SAT
+            MEDTester::SatSolver solver(graph);
+            out << "graph " << graphNum << ":\n";
+            if (solver.isDecomposable()) {
+                MEDTester::Decomposition coloring = solver.getDecomposition();
+                for (int i = 0; i < (int) adjList.size(); ++i) {
+                    out << adjList[i][0] << edgeColorChar.at(coloring[i][0]);
+                    for (int j = 1; j < 3; ++j) {
+                        out << " " << adjList[i][j] << edgeColorChar.at(coloring[i][j]);
+                    }
+                    out << "\n";
                 }
-                out << "\n";
+            } else {
+                out << "false\n";
             }
-        } else {
-            out << "false\n";
-        }
+        #else
+            out << "graph " << graphNum << ":\n";
+            if (graph.isDecomposable()) {
+                MEDTester::Decomposition coloring = graph.getDecomposition();
+                for (int i = 0; i < graph.getVerticesCount(); ++i) {
+                    out << adjList[i][0] << edgeColorChar.at(coloring[i][0]);
+                    for (int j = 1; j < 3; ++j) {
+                        out << " " << adjList[i][j] << edgeColorChar.at(coloring[i][j]);
+                    }
+                    out << "\n";
+                }
+            } else {
+                out << "false\n";
+            }
+        #endif
     }
 }
 
@@ -181,40 +223,40 @@ int MEDTester::GraphAnalyser::getInt(std::istream& in, const std::string& what)
 {
     int x;
     if (!(in >> x)) {
-        throw MEDTester::GraphAnalyser::WrongInputException(MEDTester::GraphAnalyser::WRONG_INPUT_FORMAT_MESSAGE("missing " + what));
+        throw WrongInputException(WRONG_INPUT_FORMAT_MESSAGE("missing " + what));
     }
     return x;
 }
 
 MEDTester::Matrix MEDTester::GraphAnalyser::getAdjList(std::istream& in, int graphNum, bool errorCheck = true)
 {
-    int numVertices = MEDTester::GraphAnalyser::getInt(in, "number of vertices in graph " + std::to_string(graphNum));
+    int numVertices = getInt(in, "number of vertices in graph " + std::to_string(graphNum));
 
     MEDTester::Matrix adjList(numVertices, MEDTester::MatrixLine(3, -1));
 
     for (int u = 0; u < numVertices; ++u) {
         std::unordered_set<int> adjacentVertices;
         for (int i = 0; i < 3; i++) {
-            int v = MEDTester::GraphAnalyser::getInt(in, "adjacency list entry in graph " + std::to_string(graphNum));
+            int v = getInt(in, "adjacency list entry in graph " + std::to_string(graphNum));
             
             if (errorCheck) {
                 if (v < 0 || v >= numVertices) {
-                    throw MEDTester::GraphAnalyser::WrongInputException(MEDTester::GraphAnalyser::WRONG_INPUT_FORMAT_MESSAGE(
+                    throw WrongInputException(WRONG_INPUT_FORMAT_MESSAGE(
                         "vertex " + std::to_string(v) + " out of range, graph " + std::to_string(graphNum)
                     ));
                 }
                 if (v == u) {
-                    throw MEDTester::GraphAnalyser::WrongInputException(MEDTester::GraphAnalyser::WRONG_INPUT_FORMAT_MESSAGE(
+                    throw WrongInputException(WRONG_INPUT_FORMAT_MESSAGE(
                         "vertex " + std::to_string(v) + " has a loop, graph " + std::to_string(graphNum)
                     ));
                 }
                 if (adjacentVertices.count(v)) {
-                    throw MEDTester::GraphAnalyser::WrongInputException(MEDTester::GraphAnalyser::WRONG_INPUT_FORMAT_MESSAGE(
+                    throw WrongInputException(WRONG_INPUT_FORMAT_MESSAGE(
                         "double edge from vertex " + std::to_string(u) + " to vertex " + std::to_string(v) + ", graph " + std::to_string(graphNum)
                     ));
                 }
                 if (adjList[v][0] != -1 && adjList[v][0] != u && adjList[v][1] != u && adjList[v][2] != u) {
-                    throw MEDTester::GraphAnalyser::WrongInputException(MEDTester::GraphAnalyser::WRONG_INPUT_FORMAT_MESSAGE(
+                    throw WrongInputException(WRONG_INPUT_FORMAT_MESSAGE(
                         "trying to add edge from vertex " + std::to_string(u) + " to vertex " + std::to_string(v) + " while vertex " + std::to_string(v) + " has already 3 edges to other vertices, graph " + std::to_string(graphNum)
                     ));
                 }

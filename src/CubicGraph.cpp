@@ -11,15 +11,16 @@
 
 
 const std::vector<std::vector<MEDTester::EdgeType>> VERTEX_COLORINGS = {
-    {MEDTester::EdgeType::MATCHING, MEDTester::EdgeType::CYCLE,MEDTester::EdgeType::CYCLE},
+    {MEDTester::EdgeType::MATCHING, MEDTester::EdgeType::CYCLE, MEDTester::EdgeType::CYCLE},
     {MEDTester::EdgeType::STAR_LEAF, MEDTester::EdgeType::CYCLE, MEDTester::EdgeType::CYCLE},
     {MEDTester::EdgeType::STAR_CENTER, MEDTester::EdgeType::STAR_LEAF, MEDTester::EdgeType::STAR_LEAF}
 };
 
 
-MEDTester::CubicGraph::CubicGraph(const MEDTester::Matrix& adjList, bool checkGraph = false)
+MEDTester::CubicGraph::CubicGraph(const MEDTester::Matrix& adjList)
 {
     mVerticesCount = adjList.size();
+    mEdgesCount = (3 * mVerticesCount) / 2;
     mAdjList = MEDTester::Matrix(mVerticesCount, MEDTester::MatrixLine(3));
     mAdjListIndices = MEDTester::Matrix(mVerticesCount, MEDTester::MatrixLine(mVerticesCount, -1));
 
@@ -34,7 +35,7 @@ MEDTester::CubicGraph::CubicGraph(const MEDTester::Matrix& adjList, bool checkGr
     mDecomposition = MEDTester::Decomposition();
     mColoringDone = false;
     mBridgesCount = -1;
-    mHasBridges = false;
+    mAllBridges = false;
 }
 
 MEDTester::CubicGraph::~CubicGraph() {}
@@ -45,15 +46,25 @@ int MEDTester::CubicGraph::getVerticesCount() const
     return mVerticesCount;
 }
 
+int MEDTester::CubicGraph::getEdgesCount() const
+{
+    return mEdgesCount;
+}
+
 MEDTester::Matrix MEDTester::CubicGraph::getAdjList() const
 {
     return mAdjList;
 }
 
+MEDTester::Matrix MEDTester::CubicGraph::getAdjListIndices() const
+{
+    return mAdjListIndices;
+}
+
 MEDTester::Decomposition MEDTester::CubicGraph::getDecomposition()
 {
     if (mDecomposition.empty()) {
-        MEDTester::CubicGraph::generateDecomposition(0);
+        generateDecomposition(0);
     }
     return mDecomposition;
 }
@@ -107,7 +118,7 @@ std::vector<int> MEDTester::CubicGraph::dfs(int vertex) const
 {
     std::vector<int> returnVector;
     std::unordered_set<int> visited;
-    MEDTester::CubicGraph::dfsHelper(vertex, returnVector, visited);
+    dfsHelper(vertex, returnVector, visited);
 
     return returnVector;
 }
@@ -120,22 +131,24 @@ void MEDTester::CubicGraph::dfsHelper(int vertex, std::vector<int>& vec, std::un
     visited.insert(vertex);
 
     for (int i = 0; i < 3; i++) {
-        MEDTester::CubicGraph::dfsHelper(mAdjList[vertex][i], vec, visited);
+        dfsHelper(mAdjList[vertex][i], vec, visited);
     }
 }
 
 
 bool MEDTester::CubicGraph::isDecomposable() {
-    if (mDecomposition.empty()) {
-        MEDTester::CubicGraph::generateDecomposition(0);
-    }
-    if (mDecomposition[0][0] == MEDTester::EdgeType::NONE) return false;
+    if (getDecomposition()[0][0] == MEDTester::EdgeType::NONE) return false;
     return true;
 }
 
 bool MEDTester::CubicGraph::isBridgeless() {
-    if (mBridgesCount == -1) MEDTester::CubicGraph::countBridges(true);
-    return mHasBridges;
+    if (mBridgesCount == -1) countBridges(true);
+    return mBridgesCount == 0;
+}
+
+int MEDTester::CubicGraph::getBridgesCount() {
+    if (mAllBridges) countBridges(false);
+    return mBridgesCount;
 }
 
 
@@ -150,20 +163,25 @@ void MEDTester::CubicGraph::generateDecomposition(int vertex = 0)
 {
     mDecomposition = MEDTester::Decomposition(mVerticesCount, std::vector<MEDTester::EdgeType>(3, MEDTester::EdgeType::NONE));
     mColoringDone = false;
-    std::vector<int> vertices = MEDTester::CubicGraph::dfs(vertex);
+    std::vector<int> vertices = dfs(vertex);
 
-    for (const std::vector<MEDTester::EdgeType>& colors : VERTEX_COLORINGS) {
-        for (int r = 0; r < 3 && !mColoringDone; r++) {
-            for (int i = 0; i < 3; ++i) {
-                MEDTester::CubicGraph::colorEdge(0, i, colors[(i+r) % 3]);
-            }
-            MEDTester::CubicGraph::decompositionHelper(1, vertices);
-        }
-    }
+    colorEdge(0, 0, EdgeType::CYCLE);
+    colorEdge(0, 1, EdgeType::MATCHING);
+    colorEdge(0, 2, EdgeType::CYCLE);
+    decompositionHelper(1, vertices);
+
+    // for (const std::vector<MEDTester::EdgeType>& colors : VERTEX_COLORINGS) {
+    //     for (int r = 0; r < 3 && !mColoringDone; r++) {
+    //         for (int i = 0; i < 3; ++i) {
+    //             colorEdge(0, i, colors[(i+r) % 3]);
+    //         }
+    //         decompositionHelper(1, vertices);
+    //     }
+    // }
 
     if (!mColoringDone) {
         for (int i = 0; i < 3; ++i) {
-            MEDTester::CubicGraph::colorEdge(0, i, MEDTester::EdgeType::NONE);
+            colorEdge(0, i, MEDTester::EdgeType::NONE);
         }
     }
 }
@@ -173,7 +191,7 @@ void MEDTester::CubicGraph::decompositionHelper(unsigned int index, std::vector<
     if (mColoringDone) return;
     
     if (index >= vertices.size()) {
-        mColoringDone = MEDTester::CubicGraph::checkCycles() && MEDTester::CubicGraph::checkDoubleStars();
+        mColoringDone = checkCycles() && checkDoubleStars();
         return;
     }
 
@@ -190,7 +208,7 @@ void MEDTester::CubicGraph::decompositionHelper(unsigned int index, std::vector<
 
     /* If at least one edge is double-star leaf edge, we check if the coloring of adjacent edges
      * is still "correct". If it is, than we determine on which "side" of double-star leaf edge
-     * is this vertex.  */
+     * is this vertex. */
     bool starCenterVertex = false;
     bool starLeafVertex = false;
     if (edgeColorsCount[3]) {
@@ -265,9 +283,9 @@ void MEDTester::CubicGraph::decompositionHelper(unsigned int index, std::vector<
     /* If starLeafVertex is set to true, than the uncolored edges must be cycle edges. */
     if (starLeafVertex) {
         for (int i : uncolored) {
-            MEDTester::CubicGraph::colorEdge(v, i, MEDTester::EdgeType::CYCLE);
+            colorEdge(v, i, MEDTester::EdgeType::CYCLE);
         }
-        MEDTester::CubicGraph::decompositionHelper(index + 1, vertices);
+        decompositionHelper(index + 1, vertices);
     }
 
     /* If starCenterVertex is set to true, than one edge must be double-star center edge and
@@ -275,24 +293,23 @@ void MEDTester::CubicGraph::decompositionHelper(unsigned int index, std::vector<
     else if (starCenterVertex) {
         if (edgeColorsCount[4]) {
             for (int i : uncolored) {
-                MEDTester::CubicGraph::colorEdge(v, i, MEDTester::EdgeType::STAR_LEAF);
+                colorEdge(v, i, MEDTester::EdgeType::STAR_LEAF);
             }
-            MEDTester::CubicGraph::decompositionHelper(index + 1, vertices);
+            decompositionHelper(index + 1, vertices);
         }
         else if (edgeColorsCount[3] == 2) {
-            MEDTester::CubicGraph::colorEdge(v, uncolored[0], MEDTester::EdgeType::STAR_CENTER);
+            colorEdge(v, uncolored[0], MEDTester::EdgeType::STAR_CENTER);
         }
         else if (edgeColorsCount[0] == 2) {
-            MEDTester::CubicGraph::colorEdge(v, uncolored[0], MEDTester::EdgeType::STAR_CENTER);
-            MEDTester::CubicGraph::colorEdge(v, uncolored[1], MEDTester::EdgeType::STAR_LEAF);
+            colorEdge(v, uncolored[0], MEDTester::EdgeType::STAR_CENTER);
+            colorEdge(v, uncolored[1], MEDTester::EdgeType::STAR_LEAF);
+            decompositionHelper(index + 1, vertices);
 
-            MEDTester::CubicGraph::decompositionHelper(index + 1, vertices);
             if (mColoringDone) return;
 
-            MEDTester::CubicGraph::colorEdge(v, uncolored[0], MEDTester::EdgeType::STAR_LEAF);
-            MEDTester::CubicGraph::colorEdge(v, uncolored[1], MEDTester::EdgeType::STAR_CENTER);
-            
-            MEDTester::CubicGraph::decompositionHelper(index + 1, vertices);
+            colorEdge(v, uncolored[0], MEDTester::EdgeType::STAR_LEAF);
+            colorEdge(v, uncolored[1], MEDTester::EdgeType::STAR_CENTER);
+            decompositionHelper(index + 1, vertices);
         }
         else return;
     }
@@ -300,22 +317,21 @@ void MEDTester::CubicGraph::decompositionHelper(unsigned int index, std::vector<
     /* If one edge is a matching edge, then other two edges must be in a cycle. */
     else if (edgeColorsCount[1] == 1 && edgeColorsCount[0] + edgeColorsCount[2] == 2) {
         for (int i : uncolored) {
-            MEDTester::CubicGraph::colorEdge(v, i, MEDTester::EdgeType::CYCLE);
+            colorEdge(v, i, MEDTester::EdgeType::CYCLE);
         }
-        MEDTester::CubicGraph::decompositionHelper(index + 1, vertices);
+        decompositionHelper(index + 1, vertices);
     }
 
     /* If two edgeColorsCount are in a cycle, then the remaining one must be either a matching edge or
      * a double-star leaf edge (and also is uncolored, because of previous checks). */
     else if (edgeColorsCount[2] == 2 && edgeColorsCount[0]) {
-        MEDTester::CubicGraph::colorEdge(v, uncolored[0], MEDTester::EdgeType::MATCHING);
+        colorEdge(v, uncolored[0], MEDTester::EdgeType::MATCHING);
+        decompositionHelper(index + 1, vertices);
 
-        MEDTester::CubicGraph::decompositionHelper(index + 1, vertices);
         if (mColoringDone) return;
 
-        MEDTester::CubicGraph::colorEdge(v, uncolored[0], MEDTester::EdgeType::STAR_LEAF);
-
-        MEDTester::CubicGraph::decompositionHelper(index + 1, vertices);
+        colorEdge(v, uncolored[0], MEDTester::EdgeType::STAR_LEAF);
+        decompositionHelper(index + 1, vertices);
     }
 
     /* If one edge is in a cycle and two edges are not colored, then one of them must be in a cycle and
@@ -323,16 +339,16 @@ void MEDTester::CubicGraph::decompositionHelper(unsigned int index, std::vector<
     else if (edgeColorsCount[2] == 1 && edgeColorsCount[0] == 2) {
         MEDTester::EdgeType option[] = {MEDTester::EdgeType::MATCHING, MEDTester::EdgeType::STAR_LEAF};
         for (int i = 0; i < 2; i++) {
-            MEDTester::CubicGraph::colorEdge(v, uncolored.at(i), MEDTester::EdgeType::CYCLE);
+            colorEdge(v, uncolored.at(i), MEDTester::EdgeType::CYCLE);
             for (int j = 0; j < 2; j++) {
-                MEDTester::CubicGraph::colorEdge(v, uncolored.at((i+1)%2), option[j]);
-                MEDTester::CubicGraph::decompositionHelper(index + 1, vertices);
+                colorEdge(v, uncolored.at((i+1)%2), option[j]);
+                decompositionHelper(index + 1, vertices);
             }
         }
     }
 
     if (!mColoringDone) {
-        for (int i : uncolored) MEDTester::CubicGraph::colorEdge(v, i, MEDTester::EdgeType::NONE);
+        for (int i : uncolored) colorEdge(v, i, MEDTester::EdgeType::NONE);
     }
 }
 
@@ -379,53 +395,68 @@ bool MEDTester::CubicGraph::checkCycles() const
 
 bool MEDTester::CubicGraph::checkDoubleStars() const
 {
-    std::unordered_set<int> starVertices;
+    std::unordered_set<int> leafVertices;
 
     for (int v = 0; v < mVerticesCount; v++) {
-        bool isStarVertex = false;
+        bool isLeafVertex = false;
         for (int i = 0; i < 3; i++) {
             if (mDecomposition[v][i] == MEDTester::EdgeType::STAR_CENTER) {
-                isStarVertex = false;
+                isLeafVertex = false;
                 break;
             }
             if (mDecomposition[v][i] == MEDTester::EdgeType::STAR_LEAF) {
-                isStarVertex = true;
+                isLeafVertex = true;
             }
         }
-        if (isStarVertex) {
+        if (isLeafVertex) {
             for (int i = 0; i < 3; i++) {
-                if (starVertices.find(mAdjList[v][i]) != starVertices.end()) {
+                if (leafVertices.find(mAdjList[v][i]) != leafVertices.end()) {
                     return false;
                 }
             }
-            starVertices.insert(v);
+            leafVertices.insert(v);
         }
     }
     return true;
 }
 
 
-void MEDTester::CubicGraph::countBridges(bool foundOnlyOne = false)
+void MEDTester::CubicGraph::countBridges(bool findOnlyOne)
 {
     mBridgesCount = 0;
-    for (int i = 0; i < mVerticesCount-1; i++) {
-        for (int j = i+1; j < mVerticesCount; j++) {
-            if (mAdjListIndices[i][j] != -1) {
-                mAdjList[i][mAdjListIndices[i][j]] = -1;
-                int n = MEDTester::CubicGraph::dfs(i).size();
-                mAdjList[i][mAdjListIndices[i][j]] = j;
-                if (n != mVerticesCount) {
-                    mBridgesCount++;
-                    if (foundOnlyOne) {
-                        mHasBridges = true;
-                        return;
-                    }
-                }
-            }
+    std::vector<bool> visited(mVerticesCount, false);
+    std::vector<int> disc(mVerticesCount, -1);
+    std::vector<int> low(mVerticesCount, -1);
+    int time = 0;
+
+    for (int v = 0; v < mVerticesCount; ++v) {
+        if (visited[v] == false) {
+            countBridgesHelper(v, -1, visited, disc, low, &time, findOnlyOne);
         }
     }
+}
 
-    if (mBridgesCount) {
-        mHasBridges = true;
+void MEDTester::CubicGraph::countBridgesHelper(int vertex, int parent, std::vector<bool>& visited, std::vector<int>& disc, std::vector<int>& low, int *time, bool findOnlyOne)
+{
+    visited[vertex] = true;
+    disc[vertex] = low[vertex] = ++*time;
+
+    for (int i = 0; i < 3; ++i) {
+        if (findOnlyOne && mBridgesCount) return;
+
+        int v = mAdjList[vertex][i];
+        if (v == parent) continue;
+
+        if (visited[v]) {
+            low[vertex] = std::min(low[vertex], disc[v]);
+        }
+        else {
+            countBridgesHelper(v, vertex, visited, disc, low, time, findOnlyOne);
+            low[vertex] = std::min(low[vertex], low[v]);
+            if (low[v] > disc[vertex]) {
+                ++mBridgesCount;
+                if (findOnlyOne) return;
+            }
+        }
     }
 }

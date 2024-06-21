@@ -15,12 +15,15 @@ class CubicGraph
 {
 public:
     // Constructors and deconstructor:
-    CubicGraph(const MEDTester::Matrix& adjList, bool checkGraph);
+    CubicGraph();
+    CubicGraph(const MEDTester::Matrix& adjList);
     ~CubicGraph();
 
     // Getters:
     int getVerticesCount() const;
+    int getEdgesCount() const;
     MEDTester::Matrix getAdjList() const;
+    MEDTester::Matrix getAdjListIndices() const;
     MEDTester::Decomposition getDecomposition();
 
     // Functions for reading in and printing out the graph:
@@ -33,15 +36,17 @@ public:
     // Functions for checking properties of the graph:
     bool isDecomposable();
     bool isBridgeless();
+    int getBridgesCount();
 
 private:
     int mVerticesCount;
+    int mEdgesCount;
     MEDTester::Matrix mAdjList;
     MEDTester::Matrix mAdjListIndices;
     MEDTester::Decomposition mDecomposition;
     bool mColoringDone;
     int mBridgesCount;
-    bool mHasBridges;
+    bool mAllBridges;
 
     void dfsHelper(int vertex, std::vector<int>& vec, std::unordered_set<int>& visited) const;
 
@@ -53,6 +58,7 @@ private:
     bool checkDoubleStars() const;
 
     void countBridges(bool findOnlyOne);
+    void countBridgesHelper(int vertex, int parent, std::vector<bool>& visited, std::vector<int>& disc, std::vector<int>& low, int *time, bool findOnlyOne);
 };
 
 } // namespace MEDTester
