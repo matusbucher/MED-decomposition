@@ -8,10 +8,24 @@ This system provides test tool for MED-decomposition of cubic (3-regular) graphs
 
 ## Building
 
-So far, building was tested only for Linux. Soon build scripts for other OS as well. The requirements are **Make** and **g++** compiler. You can install them easily by running the command `sudo apt-get install build-essential` for Make and the command `sudo apt-get install g++` for g++ compiler. Then to build the project, simply issue:
+So far, building was tested only for Linux. Soon build scripts for other OS will be added as well.
+
+### Linux
+
+The basic requirements are **Make** and **g++** compiler. You can install them easily by running the command `sudo apt-get install build-essential` for Make and the command `sudo apt-get install g++` for g++ compiler.
+
+You can (but don't need to) install **cryptominsat** library from [here](https://github.com/msoos/cryptominisat) for significantly better performance and it is strongly recommended. Preferred are realeses 5.11.21+, but some older realeses should also work (follow build and install instructions provided at their github repository).
+
+Then to build the project with installed cryptominisat library, simply issue:
 
 ```
 make
+```
+
+or to build without cryptominisat library issue:
+
+```
+make NOSAT=1
 ```
 
 The binary will be located in `bin` folder.
