@@ -9,11 +9,11 @@ namespace MEDTester
 
 enum class EdgeType
 {
-    NONE,
-    MATCHING,
-    CYCLE,
-    STAR_POINT,
-    STAR_CENTER
+    NONE = 0,
+    MATCHING = 1,
+    CYCLE = 2,
+    STAR_LEAF = 3,
+    STAR_CENTER = 4
 };
 
 typedef std::vector<int> MatrixLine;
