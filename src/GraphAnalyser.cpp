@@ -158,10 +158,10 @@ void MEDTester::GraphAnalyser::coloringMode(std::istream& in, std::ostream& out)
 {
     const std::unordered_map<MEDTester::EdgeType, std::string> edgeColorChar = {
         {MEDTester::EdgeType::NONE, "-"},
-        {MEDTester::EdgeType::MATCHING, "m"},
-        {MEDTester::EdgeType::CYCLE, "c"},
-        {MEDTester::EdgeType::STAR_LEAF, "h"},
-        {MEDTester::EdgeType::STAR_CENTER, "s"}
+        {MEDTester::EdgeType::MATCHING, "M"},
+        {MEDTester::EdgeType::CYCLE, "C"},
+        {MEDTester::EdgeType::STAR_LEAF, "H"},
+        {MEDTester::EdgeType::STAR_CENTER, "S"}
     };
 
     int graphCount = getInt(in, "number of graphs");
