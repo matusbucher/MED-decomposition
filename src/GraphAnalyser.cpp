@@ -113,7 +113,7 @@ void MEDTester::GraphAnalyser::onlyResultMode(std::istream& in, std::ostream& ou
             MEDTester::SatSolver solver(graph);
             out << graphNum << ": " << (solver.isDecomposable() ? "true" : "false") << "\n";
         #else
-            out << graphNum << ": " << (graph.isDecomposable() ? "true" : "false") << " (graph)\n";
+            out << graphNum << ": " << (graph.isDecomposable() ? "true" : "false") << "\n";
         #endif
     }
 }

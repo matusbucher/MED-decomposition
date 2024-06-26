@@ -7,7 +7,8 @@
 #include <cstring>
 #include <vector>
 #include <unordered_set>
-#include <iostream>
+
+#include <iostream> // DELETE
 
 
 const std::vector<std::vector<MEDTester::EdgeType>> VERTEX_COLORINGS = {
@@ -164,26 +165,7 @@ void MEDTester::CubicGraph::generateDecomposition(int vertex = 0)
     mDecomposition = MEDTester::Decomposition(mVerticesCount, std::vector<MEDTester::EdgeType>(3, MEDTester::EdgeType::NONE));
     mColoringDone = false;
     std::vector<int> vertices = dfs(vertex);
-
-    colorEdge(0, 0, EdgeType::CYCLE);
-    colorEdge(0, 1, EdgeType::MATCHING);
-    colorEdge(0, 2, EdgeType::CYCLE);
-    decompositionHelper(1, vertices);
-
-    // for (const std::vector<MEDTester::EdgeType>& colors : VERTEX_COLORINGS) {
-    //     for (int r = 0; r < 3 && !mColoringDone; r++) {
-    //         for (int i = 0; i < 3; ++i) {
-    //             colorEdge(0, i, colors[(i+r) % 3]);
-    //         }
-    //         decompositionHelper(1, vertices);
-    //     }
-    // }
-
-    if (!mColoringDone) {
-        for (int i = 0; i < 3; ++i) {
-            colorEdge(0, i, MEDTester::EdgeType::NONE);
-        }
-    }
+    decompositionHelper(0, vertices);
 }
 
 void MEDTester::CubicGraph::decompositionHelper(unsigned int index, std::vector<int>& vertices)
@@ -206,11 +188,20 @@ void MEDTester::CubicGraph::decompositionHelper(unsigned int index, std::vector<
         ++edgeColorsCount[(int) mDecomposition[v][i]];
     }
 
+    if (edgeColorsCount[0] == 3) {
+        for (const std::vector<MEDTester::EdgeType>& colors : VERTEX_COLORINGS) {
+            for (int r = 0; r < 3 && !mColoringDone; ++r) {
+                for (int i = 0; i < 3; ++i) {
+                    colorEdge(0, i, colors[(i+r) % 3]);
+                }
+                decompositionHelper(index + 1, vertices);
+            }
+        }
+    }
+
     /* If at least one edge is double-star leaf edge, we check if the coloring of adjacent edges
-     * is still "correct". If it is, than we determine on which "side" of double-star leaf edge
+     * is still "correct". If it is, then we determine on which "side" of double-star leaf edge
      * is this vertex. */
-    bool starCenterVertex = false;
-    bool starLeafVertex = false;
     if (edgeColorsCount[3]) {
         std::vector<int> leafEdges;
         for (int i = 0; i < 3; ++i) {
@@ -219,7 +210,7 @@ void MEDTester::CubicGraph::decompositionHelper(unsigned int index, std::vector<
             }
         }
 
-        /* If another edge is cycle edge, than the double-star leaf edge should be adjacent to
+        /* If another edge is cycle edge, then the double-star leaf edge should be adjacent to
          * double-star center edge. */
         if (edgeColorsCount[2]) {
             if (edgeColorsCount[0] + edgeColorsCount[2] + edgeColorsCount[3] != 3 || edgeColorsCount[3] == 2) return;
@@ -232,11 +223,13 @@ void MEDTester::CubicGraph::decompositionHelper(unsigned int index, std::vector<
                     }
                 }
                 if (!checked) return;
-                starLeafVertex = true;
             }
+            
+            for (int i : uncolored) colorEdge(v, i, MEDTester::EdgeType::CYCLE);
+            decompositionHelper(index + 1, vertices);
         }
 
-        /* If another edge is double-star center edge, than the double-star leaf edge should be
+        /* If another edge is double-star center edge, then the double-star leaf edge should be
          * adjacent to double-star center edge. */
         else if (edgeColorsCount[4]) {
             if (edgeColorsCount[0] + edgeColorsCount[3] + edgeColorsCount[4] != 3 || edgeColorsCount[4] == 2) return;
@@ -249,69 +242,62 @@ void MEDTester::CubicGraph::decompositionHelper(unsigned int index, std::vector<
                     }
                 }
                 if (!checked) return;
-                starCenterVertex = true;
             }
+
+            for (int i : uncolored) colorEdge(v, i, MEDTester::EdgeType::STAR_LEAF);
+            decompositionHelper(index + 1, vertices);
         }
 
-        else if (edgeColorsCount[0] + edgeColorsCount[3] != 3) return;
-
+        /* Else the should be only double-star leaf edges and uncoclored edges - no matching edge - and also not
+         * three double-star leaf edges. */
         else {
+            if (edgeColorsCount[1] || edgeColorsCount[3] == 3) return;
+
+            bool starLeafVertex = true;
+            bool starCenterVertex = true;
+
             for (int i : leafEdges) {
                 for (int j = 0; j < 3; ++j) {
                     if (mDecomposition[mAdjList[v][i]][j] == MEDTester::EdgeType::CYCLE) {
-                        if (starLeafVertex) return;
-                        starCenterVertex = true;
+                        starLeafVertex = false;
                         break;
                     }
                     if (mDecomposition[mAdjList[v][i]][j] == MEDTester::EdgeType::STAR_CENTER) {
-                        if (starCenterVertex) return;
-                        starLeafVertex = true;
+                        starCenterVertex = false;
                         break;
                     }
+                }
+            }
+
+            if (starLeafVertex && edgeColorsCount[0] == 2) {
+                for (int i : uncolored) colorEdge(v, i, MEDTester::EdgeType::CYCLE);
+                decompositionHelper(index + 1, vertices);
+            }
+
+            if (starCenterVertex) {
+                if (edgeColorsCount[0] == 1) {
+                    colorEdge(v, uncolored[0], MEDTester::EdgeType::STAR_CENTER);
+                    decompositionHelper(index + 1, vertices);
+                }
+                else {
+                    colorEdge(v, uncolored[0], MEDTester::EdgeType::STAR_CENTER);
+                    colorEdge(v, uncolored[1], MEDTester::EdgeType::STAR_LEAF);
+                    decompositionHelper(index + 1, vertices);
+                    if (mColoringDone) return;
+                    colorEdge(v, uncolored[0], MEDTester::EdgeType::STAR_LEAF);
+                    colorEdge(v, uncolored[1], MEDTester::EdgeType::STAR_CENTER);
+                    decompositionHelper(index + 1, vertices);
                 }
             }
         }
     }
 
-    /* We also check if there is not only one double-star center edge (with no leaf edges). */
+    /* If there is only one double-star center edge (with no leaf edges), then other two should be
+     * double-star leaf edges. */
     else if (edgeColorsCount[4]) {
         if (edgeColorsCount[0] != 2) return;
-        starCenterVertex = true;
-    }
-
-
-    /* If starLeafVertex is set to true, than the uncolored edges must be cycle edges. */
-    if (starLeafVertex) {
-        for (int i : uncolored) {
-            colorEdge(v, i, MEDTester::EdgeType::CYCLE);
-        }
+        for (int i : uncolored) colorEdge(v, i, MEDTester::EdgeType::STAR_LEAF);
         decompositionHelper(index + 1, vertices);
-    }
-
-    /* If starCenterVertex is set to true, than one edge must be double-star center edge and
-     * the other two double-star leaf edges. */
-    else if (starCenterVertex) {
-        if (edgeColorsCount[4]) {
-            for (int i : uncolored) {
-                colorEdge(v, i, MEDTester::EdgeType::STAR_LEAF);
-            }
-            decompositionHelper(index + 1, vertices);
-        }
-        else if (edgeColorsCount[3] == 2) {
-            colorEdge(v, uncolored[0], MEDTester::EdgeType::STAR_CENTER);
-        }
-        else if (edgeColorsCount[0] == 2) {
-            colorEdge(v, uncolored[0], MEDTester::EdgeType::STAR_CENTER);
-            colorEdge(v, uncolored[1], MEDTester::EdgeType::STAR_LEAF);
-            decompositionHelper(index + 1, vertices);
-
-            if (mColoringDone) return;
-
-            colorEdge(v, uncolored[0], MEDTester::EdgeType::STAR_LEAF);
-            colorEdge(v, uncolored[1], MEDTester::EdgeType::STAR_CENTER);
-            decompositionHelper(index + 1, vertices);
-        }
-        else return;
     }
 
     /* If one edge is a matching edge, then other two edges must be in a cycle. */
@@ -327,9 +313,7 @@ void MEDTester::CubicGraph::decompositionHelper(unsigned int index, std::vector<
     else if (edgeColorsCount[2] == 2 && edgeColorsCount[0]) {
         colorEdge(v, uncolored[0], MEDTester::EdgeType::MATCHING);
         decompositionHelper(index + 1, vertices);
-
         if (mColoringDone) return;
-
         colorEdge(v, uncolored[0], MEDTester::EdgeType::STAR_LEAF);
         decompositionHelper(index + 1, vertices);
     }
@@ -343,6 +327,7 @@ void MEDTester::CubicGraph::decompositionHelper(unsigned int index, std::vector<
             for (int j = 0; j < 2; j++) {
                 colorEdge(v, uncolored.at((i+1)%2), option[j]);
                 decompositionHelper(index + 1, vertices);
+                if (mColoringDone) return;
             }
         }
     }
