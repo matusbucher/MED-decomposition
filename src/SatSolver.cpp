@@ -192,6 +192,9 @@ void MEDTester::SatSolver::createTheory()
         });
     }
 
+    // matrix for effective double-star independence checking
+    std::vector<std::vector<bool>> done(edgesCount, std::vector<bool>(edgesCount, false));
+
     for (int e = 0; e < edgesCount; ++e) {
         int u = mEdgeVars[e].first;
         int v = mEdgeVars[e].second;
@@ -258,22 +261,20 @@ void MEDTester::SatSolver::createTheory()
         });
 
         /* Double-stars should be indenpendent - for each edge, he shouldn't have more than one 
-         * adjacent double-star leaf edge unless it is double-star center edge or two adjacent
-         * edges are adjacent too (to each other). */
-        std::vector<std::vector<bool>> notDone(edgesCount, std::vector<bool>(edgesCount, true));
+         * adjacent double-star leaf edge unless it is double-star center. */
         CMSat::Lit starCenterLit2(edgeVarToNum(u, v, MEDTester::SatEdgeType::STAR_CENTER), false);
         for (int a = 1; a <= 2; ++a) {
             for (int b = 1; b <= 2; ++b) {
                 int x = adjList[u][(i+a)%3];
                 int y = adjList[v][(j+b)%3];
-                if (x != y && notDone[mEdgeVarNums[u][x]][mEdgeVarNums[v][y]]) {
+                if (!done[mEdgeVarNums[u][x]][mEdgeVarNums[v][y]]) {
                     mSolver.add_clause({
                         starCenterLit2,
                         CMSat::Lit(edgeVarToNum(u, x, MEDTester::SatEdgeType::STAR_LEAF), true),
                         CMSat::Lit(edgeVarToNum(v, y, MEDTester::SatEdgeType::STAR_LEAF), true),
                     });
-                    notDone[mEdgeVarNums[u][x]][mEdgeVarNums[v][y]] = false;
-                    notDone[mEdgeVarNums[v][y]][mEdgeVarNums[u][x]] = false;
+                    done[mEdgeVarNums[u][x]][mEdgeVarNums[v][y]] = true;
+                    done[mEdgeVarNums[v][y]][mEdgeVarNums[u][x]] = true;
                 }
             }
         }
