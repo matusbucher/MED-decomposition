@@ -89,6 +89,8 @@ $RECYCLE.BIN/
 *.msm
 *.msp
 
-
 # Log files
 *.log
+
+# Shell scripts
+*.sh
