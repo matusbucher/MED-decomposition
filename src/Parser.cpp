@@ -50,7 +50,7 @@ const MEDTester::Parser::ModeInfo<MEDTester::OutputMode> MEDTester::Parser::ONLY
 {
     "only result",
     "Prints only the answer 'true' or 'false' ('true' = graph is MED-decomposable).",
-    { "onlyresult", "or", "r" },
+    { "onlyresult", "or" },
     MEDTester::OutputMode::ONLY_RESULT
 };
 
@@ -58,7 +58,7 @@ const MEDTester::Parser::ModeInfo<MEDTester::OutputMode> MEDTester::Parser::NOT_
 {
     "not decomposable",
     "Prints only numbers of those graphs, that are not MED-decomposable.",
-    { "notdecomposable", "nd", "d" },
+    { "notdecomposable", "nd" },
     MEDTester::OutputMode::NOT_DECOMPOSABLE
 };
 
@@ -66,14 +66,14 @@ const MEDTester::Parser::ModeInfo<MEDTester::OutputMode> MEDTester::Parser::NOT_
 {
     "not decomposable bridgeless",
     "Prints only numbers of those graphs, that are not MED-decomposable and bridgeless.",
-    { "notdecomposablebridgeless", "ndb", "b" },
+    { "notdecomposablebridgeless", "ndb" },
     MEDTester::OutputMode::NOT_DECOMPOSABLE_BRIDGELESS
 };
 
 const MEDTester::Parser::ModeInfo<MEDTester::OutputMode> MEDTester::Parser::COLORING_MODE_INFO
 {
     "coloring",
-    "Prints one of possible MED decomposition or 'false' if there is not such decomposition. Output format is similar to the input format, except 'colors' are added to each edge. 'm' is matching edge, 'c' is cycle edge, 's' is double-star center edge and 'h' is double-star point edge.",
+    "Prints one of possible MED decomposition or 'false' if there is not such decomposition. Output format is similar to the input format, except 'colors' are added to each edge. 'M' is matching edge, 'C' is cycle edge, 'S' is double-star center edge and 'H' is double-star point edge.",
     { "coloring", "c" },
     MEDTester::OutputMode::COLORING
 };
