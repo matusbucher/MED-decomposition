@@ -51,11 +51,11 @@ Specifies output file to which the program should write results. If omitted, sta
 
 - `--mode`, `-m`\
 Specifies formating of output. Use with one of the following mode names (default is 'only result' mode):
-    - `onlyresult` / `or` / `r`\
+    - `onlyresult` / `or`\
     Prints only the answer 'true' or 'false' ('true' means graph is MED-decomposable).
-    - `notdecomposable` / `nd` / `d`\
+    - `notdecomposable` / `nd`\
     Prints only numbers of those graphs, that are not MED-decomposable.
-    - `notdecomposablebridgeless` / `ndb` / `b`\
+    - `notdecomposablebridgeless` / `ndb`\
     Prints only numbers of those graphs, that are not MED-decomposable and bridgeless at the same time.
     - `coloring` / `c`\
     Prints one of possible MED decomposition or 'false' if there is no such decomposition. Output format is similar to the input format, except 'colors' are added to each edge. 'm' is matching edge, 'c' is cycle edge, 's' is double-star center edge and 'h' is double-star point edge.
