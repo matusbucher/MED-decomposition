@@ -15,9 +15,11 @@
 #include <unordered_set>
 #include <unordered_map>
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <filesystem>
 #include <chrono>
+#include <cmath>
 
 
 MEDTester::GraphAnalyser::GraphAnalyser(MEDTester::Parser& parser)
@@ -169,6 +171,7 @@ void MEDTester::GraphAnalyser::coloringMode(std::istream& in, std::ostream& out)
         int graphNum = getInt(in, "graph number, " + std::to_string(i) + ". graph");
         MEDTester::Matrix adjList = getAdjList(in, graphNum, true);
         MEDTester::CubicGraph graph(adjList);
+        int width = (int) std::log10(graph.getVerticesCount()) + 1;
 
         #ifdef SAT
             MEDTester::SatSolver solver(graph);
@@ -176,8 +179,8 @@ void MEDTester::GraphAnalyser::coloringMode(std::istream& in, std::ostream& out)
             if (solver.isDecomposable()) {
                 MEDTester::Decomposition coloring = solver.getDecomposition();
                 for (int i = 0; i < (int) adjList.size(); ++i) {
-                    out << adjList[i][0] << edgeColorChar.at(coloring[i][0]);
-                    for (int j = 1; j < 3; ++j) {
+                    out << std::setw(width) << i << ":";
+                    for (int j = 0; j < 3; ++j) {
                         out << " " << adjList[i][j] << edgeColorChar.at(coloring[i][j]);
                     }
                     out << "\n";
@@ -190,8 +193,8 @@ void MEDTester::GraphAnalyser::coloringMode(std::istream& in, std::ostream& out)
             if (graph.isDecomposable()) {
                 MEDTester::Decomposition coloring = graph.getDecomposition();
                 for (int i = 0; i < graph.getVerticesCount(); ++i) {
-                    out << adjList[i][0] << edgeColorChar.at(coloring[i][0]);
-                    for (int j = 1; j < 3; ++j) {
+                    out << std::setw(width) << i << ":";
+                    for (int j = 0; j < 3; ++j) {
                         out << " " << adjList[i][j] << edgeColorChar.at(coloring[i][j]);
                     }
                     out << "\n";
