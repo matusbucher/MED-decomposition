@@ -55,6 +55,7 @@ public:
     static const MEDTester::Parser::ModeInfo<MEDTester::OutputMode> NOT_DECOMPOSABLE_MODE_INFO;
     static const MEDTester::Parser::ModeInfo<MEDTester::OutputMode> NOT_DECOMPOSABLE_BRIDGELESS_MODE_INFO;
     static const MEDTester::Parser::ModeInfo<MEDTester::OutputMode> COLORING_MODE_INFO;
+    static const MEDTester::Parser::ModeInfo<MEDTester::OutputMode> COUNT_MODE_INFO;
 
     static const std::vector<MEDTester::Parser::ModeInfo<MEDTester::OutputMode>> AVAILABLE_OUTPUTMODES;
 

@@ -49,7 +49,7 @@ const MEDTester::Parser::OptionInfo<bool> MEDTester::Parser::SHOW_TIME_OPTION_IN
 const MEDTester::Parser::ModeInfo<MEDTester::OutputMode> MEDTester::Parser::ONLY_RESULT_MODE_INFO
 {
     "only result",
-    "Prints only the answer 'true' or 'false' ('true' = graph is MED-decomposable).",
+    "Prints only the answer 'true' or 'false' for each graph ('true' = graph is MED-decomposable).",
     { "onlyresult", "or" },
     MEDTester::OutputMode::ONLY_RESULT
 };
@@ -78,13 +78,21 @@ const MEDTester::Parser::ModeInfo<MEDTester::OutputMode> MEDTester::Parser::COLO
     MEDTester::OutputMode::COLORING
 };
 
+const MEDTester::Parser::ModeInfo<MEDTester::OutputMode> MEDTester::Parser::COUNT_MODE_INFO
+{
+    "count",
+    "Prints number of different MED decompositions for each graph (without considering automorphism).",
+    { "count", "n" },
+    MEDTester::OutputMode::COUNT
+};
+
 const std::vector<MEDTester::Parser::ModeInfo<MEDTester::OutputMode>> MEDTester::Parser::AVAILABLE_OUTPUTMODES
 {
-    ONLY_RESULT_MODE_INFO,
-    NOT_DECOMPOSABLE_MODE_INFO,
-    NOT_DECOMPOSABLE_BRIDGELESS_MODE_INFO,
-    COLORING_MODE_INFO
-
+    MEDTester::Parser::ONLY_RESULT_MODE_INFO,
+    MEDTester::Parser::NOT_DECOMPOSABLE_MODE_INFO,
+    MEDTester::Parser::NOT_DECOMPOSABLE_BRIDGELESS_MODE_INFO,
+    MEDTester::Parser::COLORING_MODE_INFO,
+    MEDTester::Parser::COUNT_MODE_INFO
 };
 
 const std::string MEDTester::Parser::HELP_SPECIFIER = "help";

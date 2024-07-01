@@ -10,7 +10,8 @@ enum class OutputMode
     ONLY_RESULT,
     NOT_DECOMPOSABLE,
     NOT_DECOMPOSABLE_BRIDGELESS,
-    COLORING
+    COLORING,
+    COUNT
 };
     
 } // namespace MEDTester

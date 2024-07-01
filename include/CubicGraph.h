@@ -15,7 +15,6 @@ class CubicGraph
 {
 public:
     // Constructors and deconstructor:
-    CubicGraph();
     CubicGraph(const MEDTester::Matrix& adjList);
     ~CubicGraph();
 
@@ -25,6 +24,8 @@ public:
     MEDTester::Matrix getAdjList() const;
     MEDTester::Matrix getAdjListIndices() const;
     MEDTester::Decomposition getDecomposition();
+    int getDecompositionsCount();
+    int getBridgesCount();
 
     // Functions for reading in and printing out the graph:
     bool printGraph(std::ostream& out) const;
@@ -36,7 +37,6 @@ public:
     // Functions for checking properties of the graph:
     bool isDecomposable();
     bool isBridgeless();
-    int getBridgesCount();
 
 private:
     int mVerticesCount;
@@ -44,15 +44,16 @@ private:
     MEDTester::Matrix mAdjList;
     MEDTester::Matrix mAdjListIndices;
     MEDTester::Decomposition mDecomposition;
-    bool mColoringDone;
+    bool mDecompositionDone;
+    int mDecompositionsCount;
     int mBridgesCount;
-    bool mAllBridges;
+    bool mAllBridgesFound;
 
     void dfsHelper(int vertex, std::vector<int>& vec, std::unordered_set<int>& visited) const;
 
-    void colorEdge(int vertex, unsigned int index, MEDTester::EdgeType color);
-    void generateDecomposition(int vertex);
-    void decompositionHelper(unsigned int index, std::vector<int>& vertices);
+    void assignEdge(int vertex, unsigned int index, MEDTester::EdgeType type);
+    void generateDecomposition(int vertex, bool counting);
+    void decompositionHelper(unsigned int index, std::vector<int>& vertices, bool counting);
 
     bool checkCycles() const;
     bool checkDoubleStars() const;

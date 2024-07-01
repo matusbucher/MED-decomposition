@@ -91,6 +91,9 @@ void MEDTester::GraphAnalyser::analyze() const
     case MEDTester::OutputMode::COLORING: 
         coloringMode(*in, *out);
         break;
+    case MEDTester::OutputMode::COUNT:
+        countMode(*in, *out);
+        break;
     }
 
     auto timeEnd = std::chrono::high_resolution_clock::now();
@@ -202,6 +205,22 @@ void MEDTester::GraphAnalyser::coloringMode(std::istream& in, std::ostream& out)
             } else {
                 out << "false\n";
             }
+        #endif
+    }
+}
+
+void MEDTester::GraphAnalyser::countMode(std::istream& in, std::ostream& out)
+{
+    int graphCount = getInt(in, "number of graphs");
+    for (int i = 1; i <= graphCount; ++i) {
+        int graphNum = getInt(in, "graph number, " + std::to_string(i) + ". graph");
+        MEDTester::CubicGraph graph(getAdjList(in, graphNum, true));
+
+        #ifdef SAT
+            MEDTester::SatSolver solver(graph);
+            out << graphNum << ": " << "\n";
+        #else
+            out << graphNum << ": " << graph.getDecompositionsCount() << "\n";
         #endif
     }
 }

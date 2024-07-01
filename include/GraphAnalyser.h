@@ -60,6 +60,7 @@ private:
     static void notDecomposableMode(std::istream& in, std::ostream& out);
     static void notDecomposableBridgelessMode(std::istream& in, std::ostream& out);
     static void coloringMode(std::istream& in, std::ostream& out);
+    static void countMode(std::istream& in, std::ostream& out);
 
     // Private static constants, messages and utility functions:
     static inline std::string WRONG_INPUT_FORMAT_MESSAGE(const std::string& additionalInfo);
