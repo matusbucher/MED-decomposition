@@ -38,7 +38,7 @@ The binary will be located in `bin` folder.
 Command syntax:
 
 ```
-./bin/med [--input | -i <path>] [--output | -o <path>] [--mode | -m <mode_name>] [--time | -t]
+./bin/med [--input | -i <path>] [--output | -o <path>] [--mode | -m <mode_name>] [--bridgeless | -b] [--time | -t]
 ```
 
 Options description:
@@ -61,6 +61,9 @@ Specifies formating of output. Use with one of the following mode names (default
     Prints one of possible MED decomposition or 'false' if there is no such decomposition. Output format is similar to the input format, except 'colors' are added to each edge. 'm' is matching edge, 'c' is cycle edge, 's' is double-star center edge and 'h' is double-star point edge.
     - `count` / `n`\
     Prints number of different MED decompositions for each graph (without considering automorphism).
+
+- `--bridgeless`, `-b`\
+Filters out graphs with a bridge (not 2-edge connected graphs).
 
 - `--time`, `-t`\
 Adds execution time at the end of the output.
