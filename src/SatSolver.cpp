@@ -11,7 +11,6 @@
 
 
 #define EDGE_TYPES_COUNT 5
-#define VERTEX_TYPES_COUNT 15
 
 
 void MEDTester::SatSolver::init()
@@ -19,6 +18,9 @@ void MEDTester::SatSolver::init()
     int n = mGraph.getVerticesCount();
     MEDTester::Matrix adjList = mGraph.getAdjList();
 
+    mDecompositionsCount = -1;
+    mCycleEquiv = false;
+    mNoNextDecomposition = false;
     mEdgeVarNums = MEDTester::Matrix(n, MEDTester::MatrixLine(n, -1));
     mEdgeVars = std::vector<std::pair<int,int>>();
 
@@ -59,45 +61,97 @@ bool MEDTester::SatSolver::isDecomposable() const
     return mDecomposable;
 }
 
-MEDTester::Decomposition MEDTester::SatSolver::getDecomposition()
+MEDTester::Decomposition MEDTester::SatSolver::getDecomposition() const
 {
-    if (mDecomposable && mDecomposition.empty()) {
-        mDecomposition = MEDTester::Decomposition(mGraph.getVerticesCount(), std::vector<MEDTester::EdgeType>(3, MEDTester::EdgeType::NONE));
-        std::vector<CMSat::lbool> model = mSolver.get_model();
-        MEDTester::Matrix adjListIndices = mGraph.getAdjListIndices();
+    return mDecomposition;
+}
 
-        for (int var = 0; var < mGraph.getEdgesCount() * EDGE_TYPES_COUNT; ++var) {
-            if (model[var] == CMSat::l_True) {
-                std::pair<std::pair<int,int>, MEDTester::SatEdgeType> edgeVar = edgeVarFromNum(var);
-                int u = edgeVar.first.first;
-                int v = edgeVar.first.second;
-                MEDTester::EdgeType type = set2et(edgeVar.second);
-                mDecomposition[u][adjListIndices[u][v]] = type;
-                mDecomposition[v][adjListIndices[v][u]] = type;
+
+bool MEDTester::SatSolver::solveNext(bool overwrite)
+{
+    if (mNoNextDecomposition) return false;
+
+    int edgesCount = mGraph.getEdgesCount();
+    auto isCycleEdgeVar = [edgesCount] (int e) -> int {
+        return edgesCount * EDGE_TYPES_COUNT + e;
+    };
+
+    if (!mCycleEquiv) {
+        mSolver.new_vars(edgesCount);
+        for (int e = 0; e < edgesCount; ++e) {
+            int cycleVar = isCycleEdgeVar(e);
+            int evenVar = e * EDGE_TYPES_COUNT + (int) MEDTester::SatEdgeType::CYCLE_EVEN;
+            int oddVar = e * EDGE_TYPES_COUNT + (int) MEDTester::SatEdgeType::CYCLE_ODD;
+            mSolver.add_clause({CMSat::Lit(cycleVar, true), CMSat::Lit(evenVar, false), CMSat::Lit(oddVar, false)});
+            mSolver.add_clause({CMSat::Lit(cycleVar, false), CMSat::Lit(evenVar, true)});
+            mSolver.add_clause({CMSat::Lit(cycleVar, false), CMSat::Lit(oddVar, true)});
+        }
+        mCycleEquiv = true;
+    }
+
+    std::vector<CMSat::lbool> model = mSolver.get_model();
+    MEDTester::Clause clause;
+    for (int e = 0; e < edgesCount; ++e) {
+        int eVar = e * EDGE_TYPES_COUNT;
+        for (int t = 0; t < EDGE_TYPES_COUNT; ++t) {
+            if (model[eVar + t] == CMSat::l_True) {
+                if (t == (int) MEDTester::SatEdgeType::CYCLE_EVEN || t == (int) MEDTester::SatEdgeType::CYCLE_ODD) {
+                    clause.push_back(CMSat::Lit(isCycleEdgeVar(e), true));
+                } else {
+                    clause.push_back(CMSat::Lit(eVar + t, true));
+                }
+                break;
+            }
+        }
+    }
+    mSolver.add_clause(clause);
+    mNoNextDecomposition = mSolver.solve() == CMSat::l_True ? false : true;
+
+    if (overwrite) {
+        model = mSolver.get_model();
+        MEDTester::Matrix adjListIndices = mGraph.getAdjListIndices();
+        for (int e = 0; e < edgesCount; ++e) {
+            int eVar = e * EDGE_TYPES_COUNT;
+            for (int t = 0; t < EDGE_TYPES_COUNT; ++t) {
+                if (model[eVar + t] == CMSat::l_True) {
+                    std::pair<std::pair<int,int>, MEDTester::SatEdgeType> edgeVar = edgeVarFromNum(eVar + t);
+                    int u = edgeVar.first.first;
+                    int v = edgeVar.first.second;
+                    MEDTester::EdgeType type = set2et(edgeVar.second);
+                    mDecomposition[u][adjListIndices[u][v]] = type;
+                    mDecomposition[v][adjListIndices[v][u]] = type;
+                    break;
+                }
             }
         }
     }
 
-    return mDecomposition;
+    return !mNoNextDecomposition;
 }
 
-bool MEDTester::SatSolver::generateNextDecomposition()
+int MEDTester::SatSolver::getDecompositionsCount()
 {
-    return false;
+    if (mDecompositionsCount == -1) {
+        mDecompositionsCount = 0;
+        if (mDecomposable) {
+            ++mDecompositionsCount;
+            while (solveNext(true)) ++mDecompositionsCount; // zmenit true -> false
+        }
+    }
+
+    return mDecompositionsCount;
 }
 
 
 int MEDTester::SatSolver::edgeVarToNum(int v1, int v2, MEDTester::SatEdgeType type) const
 {
+    if (v1 < 0 || v2 < 0 || v1 >= mGraph.getVerticesCount() || v2 >= mGraph.getVerticesCount()) return -1;
     return mEdgeVarNums[v1][v2] * EDGE_TYPES_COUNT + (int) type;
 }
 
 std::pair<std::pair<int,int>, MEDTester::SatEdgeType> MEDTester::SatSolver::edgeVarFromNum(int var) const
 {
-    if (var >= mGraph.getEdgesCount() * EDGE_TYPES_COUNT) {
-        return {};
-    }
-
+    if (var >= mGraph.getEdgesCount() * EDGE_TYPES_COUNT) return {};
     MEDTester::SatEdgeType type = (MEDTester::SatEdgeType) (var % EDGE_TYPES_COUNT);
     std::pair<int,int> edge = mEdgeVars[var / EDGE_TYPES_COUNT];
     return {edge, type};
@@ -192,9 +246,6 @@ void MEDTester::SatSolver::createTheory()
         });
     }
 
-    // matrix for effective double-star independence checking
-    std::vector<std::vector<bool>> done(edgesCount, std::vector<bool>(edgesCount, false));
-
     for (int e = 0; e < edgesCount; ++e) {
         int u = mEdgeVars[e].first;
         int v = mEdgeVars[e].second;
@@ -267,15 +318,11 @@ void MEDTester::SatSolver::createTheory()
             for (int b = 1; b <= 2; ++b) {
                 int x = adjList[u][(i+a)%3];
                 int y = adjList[v][(j+b)%3];
-                if (!done[mEdgeVarNums[u][x]][mEdgeVarNums[v][y]]) {
-                    mSolver.add_clause({
-                        starCenterLit2,
-                        CMSat::Lit(edgeVarToNum(u, x, MEDTester::SatEdgeType::STAR_LEAF), true),
-                        CMSat::Lit(edgeVarToNum(v, y, MEDTester::SatEdgeType::STAR_LEAF), true),
-                    });
-                    done[mEdgeVarNums[u][x]][mEdgeVarNums[v][y]] = true;
-                    done[mEdgeVarNums[v][y]][mEdgeVarNums[u][x]] = true;
-                }
+                mSolver.add_clause({
+                    starCenterLit2,
+                    CMSat::Lit(edgeVarToNum(u, x, MEDTester::SatEdgeType::STAR_LEAF), true),
+                    CMSat::Lit(edgeVarToNum(v, y, MEDTester::SatEdgeType::STAR_LEAF), true),
+                });
             }
         }
     }
@@ -287,4 +334,28 @@ void MEDTester::SatSolver::solve()
     // mSolver.log_to_file("sat.log");
     createTheory();
     mDecomposable = mSolver.solve() == CMSat::l_True ? true : false;
+    
+    if (mDecomposable) {
+        mDecomposition = MEDTester::Decomposition(mGraph.getVerticesCount(), std::vector<MEDTester::EdgeType>(3, MEDTester::EdgeType::NONE));
+        std::vector<CMSat::lbool> model = mSolver.get_model();
+        MEDTester::Matrix adjListIndices = mGraph.getAdjListIndices();
+
+        for (int e = 0; e < mGraph.getEdgesCount(); ++e) {
+            for (int t = 0; t < EDGE_TYPES_COUNT; ++t) {
+                int eVar = e * EDGE_TYPES_COUNT;
+                if (model[eVar + t] == CMSat::l_True) {
+                    std::pair<std::pair<int,int>, MEDTester::SatEdgeType> edgeVar = edgeVarFromNum(eVar + t);
+                    int u = edgeVar.first.first;
+                    int v = edgeVar.first.second;
+                    MEDTester::EdgeType type = set2et(edgeVar.second);
+                    mDecomposition[u][adjListIndices[u][v]] = type;
+                    mDecomposition[v][adjListIndices[v][u]] = type;
+                    break;
+                }
+            }
+        }
+    }
+    else {
+        mNoNextDecomposition = true;
+    }
 }

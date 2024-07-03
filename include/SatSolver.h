@@ -32,14 +32,17 @@ public:
     ~SatSolver();
 
     bool isDecomposable() const;
-    MEDTester::Decomposition getDecomposition();
-    bool generateNextDecomposition();
+    MEDTester::Decomposition getDecomposition() const;
+    int getDecompositionsCount();
 
 private:
     MEDTester::CubicGraph mGraph;
 
     MEDTester::Decomposition mDecomposition;
     bool mDecomposable;
+    int mDecompositionsCount;
+    bool mCycleEquiv;
+    bool mNoNextDecomposition;
 
     MEDTester::Matrix mEdgeVarNums;
     std::vector<std::pair<int,int>> mEdgeVars;
@@ -54,6 +57,7 @@ private:
 
     void createTheory();
     void solve();
+    bool solveNext(bool overwrite);
 };
 
 } // namespace MEDTester
