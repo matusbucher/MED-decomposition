@@ -218,7 +218,7 @@ void MEDTester::GraphAnalyser::countMode(std::istream& in, std::ostream& out)
 
         #ifdef SAT
             MEDTester::SatSolver solver(graph);
-            out << graphNum << ": " << "\n";
+            out << graphNum << ": " << solver.getDecompositionsCount() << "\n";
         #else
             out << graphNum << ": " << graph.getDecompositionsCount() << "\n";
         #endif

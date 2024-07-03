@@ -150,7 +150,7 @@ void MEDTester::CubicGraph::dfsHelper(int vertex, std::vector<int>& vec, std::un
 bool MEDTester::CubicGraph::isDecomposable() {
     if (mDecompositionsCount != -1) return mDecompositionsCount;
     if (!mDecompositionDone) generateDecomposition(0, false);
-    return mDecomposition[0][0] == MEDTester::EdgeType::NONE;
+    return mDecomposition[0][0] != MEDTester::EdgeType::NONE;
 }
 
 bool MEDTester::CubicGraph::isBridgeless() {
