@@ -396,7 +396,6 @@ void MEDTester::Parser::printHelpMessage()
         std::cout << formatText(joinToString(mode.specifiers, "", "", " / "), 2*TAB, WIDTH);
         std::cout << formatText(mode.description, 3*TAB, WIDTH) << "\n";
     }
-    std::cout << "\n";
 
     std::cout << formatText(
         joinToString(SHOW_TIME_OPTION_INFO.specifiers, "", "", ", "),
