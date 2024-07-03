@@ -16,7 +16,7 @@ The basic requirements are **Make** and **g++** compiler. You can install them e
 
 You can (but don't need to) install **cryptominsat** library from [here](https://github.com/msoos/cryptominisat) for significantly better performance and it is strongly recommended. Preferred are realeses 5.11.21+, but some older realeses should also work (follow build and install instructions provided at their github repository).
 
-Then to build the project with installed cryptominisat library, simply issue:
+Then to build the project with installed cryptominisat library, go to root directory of the repository and simply issue:
 
 ```
 make
@@ -38,7 +38,7 @@ The binary will be located in `bin` folder.
 Command syntax:
 
 ```
-./med [--input | -i <path>] [--output | -o <path>] [--mode | -m <mode_name>] [--time | -t]
+./bin/med [--input | -i <path>] [--output | -o <path>] [--mode | -m <mode_name>] [--time | -t]
 ```
 
 Options description:
@@ -59,6 +59,8 @@ Specifies formating of output. Use with one of the following mode names (default
     Prints only numbers of those graphs, that are not MED-decomposable and bridgeless at the same time.
     - `coloring` / `c`\
     Prints one of possible MED decomposition or 'false' if there is no such decomposition. Output format is similar to the input format, except 'colors' are added to each edge. 'm' is matching edge, 'c' is cycle edge, 's' is double-star center edge and 'h' is double-star point edge.
+    - `count` / `n`\
+    Prints number of different MED decompositions for each graph (without considering automorphism).
 
 - `--time`, `-t`\
 Adds execution time at the end of the output.
