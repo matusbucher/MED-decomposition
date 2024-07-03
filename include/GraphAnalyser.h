@@ -6,6 +6,7 @@
 #include "Parser.h"
 
 #include <string>
+#include <unordered_map>
 #include <iostream>
 #include <exception>
 
@@ -42,7 +43,7 @@ public:
 
     // Constructors and deconstructor:
     GraphAnalyser(MEDTester::Parser& parser);
-    GraphAnalyser(const std::string& inputFilename, const std::string& outputFilename, MEDTester::OutputMode outputMode, bool showTime);
+    GraphAnalyser(const std::string& inputFilename, const std::string& outputFilename, MEDTester::OutputMode outputMode, bool onlyBridgeless, bool showTime);
     ~GraphAnalyser();
 
     // Standard analysis function
@@ -53,19 +54,21 @@ private:
     std::string mInputFilename;
     std::string mOutputFilename;
     MEDTester::OutputMode mOutputMode;
+    bool mOnlyBridgeless;
     bool mShowTime;
 
     // Analysis functions for each output mode:
-    static void onlyResultMode(std::istream& in, std::ostream& out);
-    static void notDecomposableMode(std::istream& in, std::ostream& out);
-    static void notDecomposableBridgelessMode(std::istream& in, std::ostream& out);
-    static void coloringMode(std::istream& in, std::ostream& out);
-    static void countMode(std::istream& in, std::ostream& out);
+    void onlyResultMode(std::istream& in, std::ostream& out) const;
+    void notDecomposableMode(std::istream& in, std::ostream& out) const;
+    void coloringMode(std::istream& in, std::ostream& out) const;
+    void countMode(std::istream& in, std::ostream& out) const;
 
     // Private static constants, messages and utility functions:
+    static const std::unordered_map<MEDTester::EdgeType, std::string> EDGE_TYPE_CHAR;
     static inline std::string WRONG_INPUT_FORMAT_MESSAGE(const std::string& additionalInfo);
     static inline std::string INPUT_FILE_DOES_NOT_EXIST_MESSAGE(const std::string& filename);
     static inline std::string CANNOT_OPEN_FILE_MESSAGE(const std::string& filename);
+    static inline std::string OUTPUT_MODE_NOT_IMPLEMENTED(const std::string& mode);
 
     static int getInt(std::istream& in, const std::string& what);
     static MEDTester::Matrix getAdjList(std::istream& in, int graphNum, bool errorCheck);

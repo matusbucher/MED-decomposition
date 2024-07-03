@@ -48,12 +48,12 @@ public:
     static const MEDTester::Parser::OptionInfo<std::string> INPUT_FILENAME_OPTION_INFO;
     static const MEDTester::Parser::OptionInfo<std::string> OUTPUT_FILENAME_OPTION_INFO;
     static const MEDTester::Parser::OptionInfo<MEDTester::OutputMode> OUTPUT_MODE_OPTION_INFO;
+    static const MEDTester::Parser::OptionInfo<bool> ONLY_BRIDGELESS_OPTION_INFO;
     static const MEDTester::Parser::OptionInfo<bool> SHOW_TIME_OPTION_INFO;
 
     // Mode infos:
     static const MEDTester::Parser::ModeInfo<MEDTester::OutputMode> ONLY_RESULT_MODE_INFO;
     static const MEDTester::Parser::ModeInfo<MEDTester::OutputMode> NOT_DECOMPOSABLE_MODE_INFO;
-    static const MEDTester::Parser::ModeInfo<MEDTester::OutputMode> NOT_DECOMPOSABLE_BRIDGELESS_MODE_INFO;
     static const MEDTester::Parser::ModeInfo<MEDTester::OutputMode> COLORING_MODE_INFO;
     static const MEDTester::Parser::ModeInfo<MEDTester::OutputMode> COUNT_MODE_INFO;
 
@@ -72,12 +72,14 @@ public:
     std::string getInputFilename() const;
     std::string getOutputFilename() const;
     MEDTester::OutputMode getOutputMode() const;
+    bool getOnlyBridgeless() const;
     bool getShowTime() const;
 
     void setArgumentRange(char** begin, char** end);
     void setInputFilename(const std::string& filename);
     void setOutputFilename(const std::string& filename);
     void setOutputMode(MEDTester::OutputMode outputMode);
+    void setOnlyBridgeless(bool onlyBridgeless);
     void setShowTime(bool showTime);
 
     // Static and nonstatic parsing tools:
@@ -93,6 +95,7 @@ public:
     bool parseInputFilename();
     bool parseOutputFilename();
     bool parseOutputMode();
+    bool parseOnlyBridgeless();
     bool parseShowTime();
 
     void parseAll();
@@ -110,6 +113,7 @@ private:
     std::string mOutputFilename;         // If empty, stdout should be used.
     MEDTester::OutputMode mOutputMode;
     bool mShowTime;
+    bool mOnlyBridgeless;
 
     // Private static constants, messages and utility functions:
     static const std::string INVALID_ARGUMENT_RANGE_MESSAGE;

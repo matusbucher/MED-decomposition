@@ -37,6 +37,15 @@ const MEDTester::Parser::OptionInfo<MEDTester::OutputMode> MEDTester::Parser::OU
     MEDTester::OutputMode::ONLY_RESULT
 };
 
+const MEDTester::Parser::OptionInfo<bool> MEDTester::Parser::ONLY_BRIDGELESS_OPTION_INFO
+{
+    "only bridgeless",
+    "Filters out graphs with a bridge (not 2-edge connected graphs).",
+    { "--bridgeless", "-b" },
+    false,
+    false
+};
+
 const MEDTester::Parser::OptionInfo<bool> MEDTester::Parser::SHOW_TIME_OPTION_INFO
 {
     "show time",
@@ -45,6 +54,7 @@ const MEDTester::Parser::OptionInfo<bool> MEDTester::Parser::SHOW_TIME_OPTION_IN
     false,
     false
 };
+
 
 const MEDTester::Parser::ModeInfo<MEDTester::OutputMode> MEDTester::Parser::ONLY_RESULT_MODE_INFO
 {
@@ -60,14 +70,6 @@ const MEDTester::Parser::ModeInfo<MEDTester::OutputMode> MEDTester::Parser::NOT_
     "Prints only numbers of those graphs, that are not MED-decomposable.",
     { "notdecomposable", "nd" },
     MEDTester::OutputMode::NOT_DECOMPOSABLE
-};
-
-const MEDTester::Parser::ModeInfo<MEDTester::OutputMode> MEDTester::Parser::NOT_DECOMPOSABLE_BRIDGELESS_MODE_INFO
-{
-    "not decomposable bridgeless",
-    "Prints only numbers of those graphs, that are not MED-decomposable and bridgeless.",
-    { "notdecomposablebridgeless", "ndb" },
-    MEDTester::OutputMode::NOT_DECOMPOSABLE_BRIDGELESS
 };
 
 const MEDTester::Parser::ModeInfo<MEDTester::OutputMode> MEDTester::Parser::COLORING_MODE_INFO
@@ -90,7 +92,6 @@ const std::vector<MEDTester::Parser::ModeInfo<MEDTester::OutputMode>> MEDTester:
 {
     MEDTester::Parser::ONLY_RESULT_MODE_INFO,
     MEDTester::Parser::NOT_DECOMPOSABLE_MODE_INFO,
-    MEDTester::Parser::NOT_DECOMPOSABLE_BRIDGELESS_MODE_INFO,
     MEDTester::Parser::COLORING_MODE_INFO,
     MEDTester::Parser::COUNT_MODE_INFO
 };
@@ -109,6 +110,7 @@ MEDTester::Parser::Parser(char** begin, char** end)
     mOutputFilename = OUTPUT_FILENAME_OPTION_INFO.defaultValue;
     mOutputMode = OUTPUT_MODE_OPTION_INFO.defaultValue;
     mShowTime = SHOW_TIME_OPTION_INFO.defaultValue;
+    mOnlyBridgeless = ONLY_BRIDGELESS_OPTION_INFO.defaultValue;
 }
 
 MEDTester::Parser::~Parser() {}
@@ -139,10 +141,16 @@ MEDTester::OutputMode MEDTester::Parser::getOutputMode() const
     return mOutputMode;
 }
 
+bool MEDTester::Parser::getOnlyBridgeless() const
+{
+    return mOnlyBridgeless;
+}
+
 bool MEDTester::Parser::getShowTime() const
 {
     return mShowTime;
 }
+
 
 void MEDTester::Parser::setArgumentRange(char** begin, char** end)
 {
@@ -166,6 +174,11 @@ void MEDTester::Parser::setOutputFilename(const std::string& filename)
 void MEDTester::Parser::setOutputMode(MEDTester::OutputMode outputMode)
 {
     mOutputMode = outputMode;
+}
+
+void MEDTester::Parser::setOnlyBridgeless(bool onlyBridgeless)
+{
+    mOnlyBridgeless = onlyBridgeless;
 }
 
 void MEDTester::Parser::setShowTime(bool showTime)
@@ -204,6 +217,10 @@ void MEDTester::Parser::checkSyntax(char** begin, char** end)
         else if (std::find(OUTPUT_MODE_OPTION_INFO.specifiers.begin(), OUTPUT_MODE_OPTION_INFO.specifiers.end(), *it) != OUTPUT_MODE_OPTION_INFO.specifiers.end()) {
             optionName = OUTPUT_MODE_OPTION_INFO.name;
             optionHasArg = OUTPUT_MODE_OPTION_INFO.hasArg;
+        }
+        else if (std::find(ONLY_BRIDGELESS_OPTION_INFO.specifiers.begin(), ONLY_BRIDGELESS_OPTION_INFO.specifiers.end(), *it) != ONLY_BRIDGELESS_OPTION_INFO.specifiers.end()) {
+            optionName = ONLY_BRIDGELESS_OPTION_INFO.name;
+            optionHasArg = ONLY_BRIDGELESS_OPTION_INFO.hasArg;
         }
         else if (std::find(SHOW_TIME_OPTION_INFO.specifiers.begin(), SHOW_TIME_OPTION_INFO.specifiers.end(), *it) != SHOW_TIME_OPTION_INFO.specifiers.end()) {
             optionName = SHOW_TIME_OPTION_INFO.name;
@@ -318,6 +335,18 @@ bool MEDTester::Parser::parseOutputMode()
     throw InvalidSyntaxException(UNKNOWN_OUTPUT_MODE_MESSAGE(modeSpecifier));
 }
 
+bool MEDTester::Parser::parseOnlyBridgeless()
+{
+    for (std::string s : ONLY_BRIDGELESS_OPTION_INFO.specifiers) {
+        if (optionExists(s)) {
+            mOnlyBridgeless = true;
+            return true;
+        }
+    }
+
+    return false;
+}
+
 bool MEDTester::Parser::parseShowTime()
 {
     for (std::string s : SHOW_TIME_OPTION_INFO.specifiers) {
@@ -335,6 +364,7 @@ void MEDTester::Parser::parseAll()
     parseInputFilename();
     parseOutputFilename();
     parseOutputMode();
+    parseOnlyBridgeless();
     parseShowTime();
 }
 
@@ -348,10 +378,11 @@ void MEDTester::Parser::printHelpMessage()
 
     std::cout << "USAGE\n";
     std::cout << formatText(
-        "med" +
+        "./med" +
         joinToString(INPUT_FILENAME_OPTION_INFO.specifiers, " [", " <path>]", " | ") +
         joinToString(OUTPUT_FILENAME_OPTION_INFO.specifiers, " [", " <path>]", " | ") +
         joinToString(OUTPUT_MODE_OPTION_INFO.specifiers, " [", " <mode_name>]", " | ") +
+        joinToString(ONLY_BRIDGELESS_OPTION_INFO.specifiers, " [", "]", " | ") +
         joinToString(SHOW_TIME_OPTION_INFO.specifiers, " [", "]", " | "),
         1*TAB,
         WIDTH
@@ -396,6 +427,17 @@ void MEDTester::Parser::printHelpMessage()
         std::cout << formatText(joinToString(mode.specifiers, "", "", " / "), 2*TAB, WIDTH);
         std::cout << formatText(mode.description, 3*TAB, WIDTH) << "\n";
     }
+
+    std::cout << formatText(
+        joinToString(ONLY_BRIDGELESS_OPTION_INFO.specifiers, "", "", ", "),
+        1*TAB,
+        WIDTH
+    );
+    std::cout << formatText(
+        ONLY_BRIDGELESS_OPTION_INFO.description ,
+        2*TAB,
+        WIDTH
+    ) << "\n";
 
     std::cout << formatText(
         joinToString(SHOW_TIME_OPTION_INFO.specifiers, "", "", ", "),

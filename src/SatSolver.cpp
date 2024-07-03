@@ -135,7 +135,7 @@ int MEDTester::SatSolver::getDecompositionsCount()
         mDecompositionsCount = 0;
         if (mDecomposable) {
             ++mDecompositionsCount;
-            while (solveNext(true)) ++mDecompositionsCount; // zmenit true -> false
+            while (solveNext(false)) ++mDecompositionsCount;
         }
     }
 
