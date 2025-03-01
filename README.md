@@ -8,7 +8,7 @@ This system provides test tool for MED-decomposition of cubic (3-regular) graphs
 
 ## Building
 
-So far, building was tested only for Linux. Soon build scripts for other OS will be added as well.
+So far, building was tested only for Linux.
 
 ### Linux
 
